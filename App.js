@@ -167,8 +167,10 @@ class UserDetailsScreen extends Component {
 }
 
 class TodosScreen extends Component {
-  static navigationOptions = {
-    title: 'Todos',
+  static navigationOptions = ({navigation}) => {
+    return {
+      title: navigation.getParam('username') + "'s Todos",
+    };
   };
 
   constructor(props) {
@@ -216,9 +218,20 @@ class TodosScreen extends Component {
             style={styles.usersList}
             data={this.state.dataSourceTodos}
             renderItem={({item}) => (
-              <View>
-                <Text style={styles.userItem}>{item.title}</Text>
-                <Icon ios="ios-add" android="md-add" />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  backgroundColor: 'lightblue',
+                  margin: 4,
+                }}>
+                <Text style={[styles.userItem, styles.todoItem]}>
+                  {item.title}
+                </Text>
+                <Icon
+                  style={styles.todoCheck}
+                  name={item.completed === true ? 'checkmark' : 'close'}
+                />
               </View>
             )}
             keyExtractor={({id}, index) => id.toString()}
@@ -260,6 +273,13 @@ const styles = StyleSheet.create({
     padding: 5,
     marginVertical: 4,
     marginHorizontal: 4,
+  },
+  todoItem: {
+    width: '90%',
+  },
+  todoCheck: {
+    width: '10%',
+    padding: 5,
   },
   userDetailsBaseInfoContainer: {
     justifyContent: 'space-between',
