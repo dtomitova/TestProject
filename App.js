@@ -20,13 +20,19 @@ import {
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator, BottomTabBar} from 'react-navigation-tabs';
+import Icon from 'react-native-ionicons';
 
 class UsersScreen extends Component {
+  static navigationOptions = {
+    title: 'Users',
+  };
+
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
       error: null,
+      dataSource: null,
     };
   }
 
@@ -49,7 +55,6 @@ class UsersScreen extends Component {
 
   render() {
     //  const {navigate} = this.props.navigation;
-
     if (this.state.isLoading) {
       return (
         <View style={{flex: 1, padding: 20}}>
@@ -62,18 +67,21 @@ class UsersScreen extends Component {
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
           <FlatList
-            ListHeaderComponent={<Text style={styles.title}>Users: </Text>}
             style={styles.usersList}
             data={this.state.dataSource}
             renderItem={({item}) => (
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('UserDetails')}>
+                onPress={() =>
+                  this.props.navigation.navigate('UserDetails', {
+                    userId: item.id,
+                  })
+                }>
                 <Text style={styles.userItem}>
                   {item.name}, {item.username}
                 </Text>
               </TouchableOpacity>
             )}
-            keyExtractor={({id}, index) => id}
+            keyExtractor={({id}, index) => id.toString()}
           />
         </View>
       </SafeAreaView>
@@ -82,11 +90,141 @@ class UsersScreen extends Component {
 }
 
 class UserDetailsScreen extends Component {
+  static navigationOptions = {
+    title: 'Details',
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      error: null,
+      isLoading: true,
+      dataSourceUserDetails: null,
+    };
+  }
+
+  componentDidMount() {
+    const {navigation} = this.props;
+    const userId = JSON.stringify(navigation.getParam('userId', 'NO-ID'));
+    const userDetailsUrl =
+      'https://jsonplaceholder.typicode.com/users/' + userId;
+
+    return fetch(userDetailsUrl)
+      .then(response => response.json())
+      .then(responseJson => {
+        this.setState(
+          {
+            isLoading: false,
+            dataSourceUserDetails: responseJson,
+          },
+          function() {},
+        );
+      })
+      .catch(error => {
+        this.setState({error, isLoading: false});
+      });
+  }
+
   render() {
+    if (this.state.isLoading) {
+      return (
+        <View style={{flex: 1, padding: 20}}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
+
     return (
       <View style={styles.container}>
-        <Text>Detsils!</Text>
+        <View style={styles.userDetailsBaseInfoContainer}>
+          <Text>{this.state.dataSourceUserDetails.name}</Text>
+          <Text>{this.state.dataSourceUserDetails.username}</Text>
+          <Text>{this.state.dataSourceUserDetails.company['name']}</Text>
+        </View>
+        <View style={styles.userDetailsContactsContainer}>
+          <Text>{this.state.dataSourceUserDetails.phone}</Text>
+          <Text>{this.state.dataSourceUserDetails.website}</Text>
+        </View>
+        <View style={styles.userDetailsButtonsContainer}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Posts')}>
+            <Text style={styles.userItem}> Posts</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.navigate('Todos', {
+                userId: this.state.dataSourceUserDetails.id,
+                username: this.state.dataSourceUserDetails.username,
+              })
+            }>
+            <Text style={styles.userItem}>Todos</Text>
+          </TouchableOpacity>
+        </View>
       </View>
+    );
+  }
+}
+
+class TodosScreen extends Component {
+  static navigationOptions = {
+    title: 'Todos',
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      error: null,
+      isLoading: true,
+      dataSourceTodos: null,
+    };
+  }
+
+  componentDidMount() {
+    const {navigation} = this.props;
+    const userId = JSON.stringify(navigation.getParam('userId', 'NO-ID'));
+    const username = JSON.stringify(navigation.getParam('username', 'NO-ID'));
+    const userTodosUrl =
+      'https://jsonplaceholder.typicode.com/todos?userId=' + userId;
+
+    this.setState({
+      userTodosUrl: userTodosUrl,
+    });
+
+    return fetch(userTodosUrl)
+      .then(response => response.json())
+      .then(responseJson => {
+        this.setState(
+          {
+            isLoading: false,
+            dataSourceTodos: responseJson,
+          },
+          function() {},
+        );
+      })
+      .catch(error => {
+        this.setState({error, isLoading: false});
+      });
+  }
+
+  render() {
+    return (
+      <SafeAreaView style={{flex: 1}}>
+        <View style={styles.container}>
+          <FlatList
+            style={styles.usersList}
+            data={this.state.dataSourceTodos}
+            renderItem={({item}) => (
+              <View>
+                <Text style={styles.userItem}>{item.title}</Text>
+                <Icon ios="ios-add" android="md-add" />
+              </View>
+            )}
+            keyExtractor={({id}, index) => id.toString()}
+          />
+        </View>
+      </SafeAreaView>
     );
   }
 }
@@ -123,19 +261,37 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     marginHorizontal: 4,
   },
+  userDetailsBaseInfoContainer: {
+    justifyContent: 'space-between',
+    height: '15%',
+    padding: 15,
+  },
+  userDetailsContactsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    height: '5%',
+  },
+  userDetailsButtonsContainer: {
+    justifyContent: 'flex-start',
+    height: '80%',
+  },
 });
 
-const UsersStack = createStackNavigator({
-  Users: {
-    screen: UsersScreen,
+const UsersStack = createStackNavigator(
+  {
+    Users: UsersScreen,
+    UserDetails: UserDetailsScreen,
+    Todos: TodosScreen,
   },
-  UserDetails: {
-    screen: UserDetailsScreen,
-    navigationOptions: () => ({
-      headerBackTitle: 'Users',
-    }),
+  {
+    defaultNavigationOptions: {
+      headerTintColor: '#fff',
+      headerStyle: {
+        backgroundColor: 'skyblue',
+      },
+    },
   },
-});
+);
 
 const EmptyStack = createStackNavigator({
   Empty: EmptyScreen,
