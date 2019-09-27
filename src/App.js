@@ -9,20 +9,14 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator, BottomTabBar} from 'react-navigation-tabs';
 import Icon from 'react-native-ionicons';
 import Collapsible from 'react-native-collapsible';
-import Accordion from 'react-native-collapsible/Accordion';
+import PostsScreen from './Posts/Posts';
+import configureStore from './configureStore';
+import { Provider } from 'react-redux';
 
 class UsersScreen extends Component {
   static navigationOptions = {
@@ -36,6 +30,7 @@ class UsersScreen extends Component {
       error: null,
       dataSource: null,
     };
+
   }
 
   componentDidMount() {
@@ -65,7 +60,7 @@ class UsersScreen extends Component {
       );
     }
 
-    return (
+    return (      
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
           <FlatList
@@ -86,7 +81,7 @@ class UsersScreen extends Component {
             keyExtractor={({id}, index) => id.toString()}
           />
         </View>
-      </SafeAreaView>
+      </SafeAreaView>      
     );
   }
 }
@@ -252,110 +247,6 @@ class TodosScreen extends Component {
   }
 }
 
-class PostsScreen extends Component {
-  static navigationOptions = ({navigation}) => {
-    return {
-      title: navigation.getParam('username') + "'s Posts",
-      headerBackTitle: null,
-    };
-  };
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      error: null,
-      isLoading: true,
-      dataSourcePosts: null,
-      activeSections: [],
-      openedPosts: [],
-    };
-  }
-
-  componentDidMount() {
-    const {navigation} = this.props;
-    const userId = JSON.stringify(navigation.getParam('userId', 'NO-ID'));
-    const userPostsUrl =
-      'https://jsonplaceholder.typicode.com/posts?userId=' + userId;
-
-    return fetch(userPostsUrl)
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState(
-          {
-            isLoading: false,
-            dataSourcePosts: responseJson,
-          },
-          function() {},
-        );
-      })
-      .catch(error => {
-        this.setState({error, isLoading: false});
-      });
-  }
-
-  renderHeader = section => {
-    return (
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          backgroundColor: 'lightblue',
-          margin: 4,
-        }}>
-        <Text style={styles.todoItem}>{section.title}</Text>
-        <Icon
-          style={styles.todoCheck}
-          name={
-            this.state.activeSections.filter(
-              s => s == section.id - this.state.dataSourcePosts[0].id,
-            ).length > 0
-              ? 'arrow-up'
-              : 'arrow-down'
-          }
-        />
-      </View>
-    );
-  };
-
-  renderContent = section => {
-    return (
-      <View style={styles.userItem}>
-        <Text>{section.body}</Text>
-      </View>
-    );
-  };
-
-  updateSections = activeSections => {
-    this.setState({activeSections});
-  };
-
-  render() {
-    if (this.state.isLoading) {
-      return (
-        <View style={{flex: 1, padding: 20}}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-
-    return (
-      <SafeAreaView style={{flex: 1}}>
-        <View style={styles.containerStartTop}>
-          <Accordion
-            style={{justifyContent: 'flex-start', alignItems: 'center'}}
-            sections={this.state.dataSourcePosts}
-            activeSections={this.state.activeSections}
-            renderHeader={this.renderHeader}
-            renderContent={this.renderContent}
-            onChange={this.updateSections}
-            expandMultiple="true"
-          />
-        </View>
-      </SafeAreaView>
-    );
-  }
-}
 
 class EmptyScreen extends Component {
   render() {
@@ -442,4 +333,17 @@ const TabNavigator = createBottomTabNavigator({
   Empty: EmptyStack,
 });
 
-export default createAppContainer(TabNavigator);
+class App extends Component {
+  render() {
+    const AppNavigator = createAppContainer(TabNavigator);
+    const store = configureStore();
+
+    return (
+      <Provider store={store}>
+        <AppNavigator />
+      </Provider>
+    )
+  }
+}
+
+export default App;
