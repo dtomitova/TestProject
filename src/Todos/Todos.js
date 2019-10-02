@@ -7,13 +7,31 @@ import {
   TouchableOpacity,
   StyleSheet,
   Text,
+  Button,
 } from 'react-native';
 import Icon from 'react-native-ionicons';
+import {
+  Container,
+  Header,
+  Content,
+  ListItem,
+  Radio,
+  Right,
+  Left,
+} from 'native-base';
+import Modal from 'react-native-modal';
+import TodosFilterComponent from './TodosFilterComponent/TodosFilterComponent';
 
 class TodosScreen extends Component {
   static navigationOptions = ({navigation}) => {
+    const {params = {}} = navigation.state;
     return {
       title: navigation.getParam('username') + "'s Todos",
+      headerRight: (
+        <TouchableOpacity onPress={params.handleSave}>
+          <Text style={styles.headerButton}>Sort</Text>
+        </TouchableOpacity>
+      ),
     };
   };
 
@@ -24,11 +42,21 @@ class TodosScreen extends Component {
       error: null,
       isLoading: true,
       dataSourceTodos: null,
+      dataSourceTodosDefault: null,
+      isModalVisible: false,
+      radioValue: 'default',
+      currentSortOption: 'default',
+      filterOptions: [
+        {title: 'Default', value: 'default'},
+        {title: 'Name', value: 'name'},
+        {title: 'Completion', value: 'completion'},
+      ],
     };
   }
 
   componentDidMount() {
     const {navigation} = this.props;
+    navigation.setParams({handleSave: this.handleSortButtonPressed});
     const userId = JSON.stringify(navigation.getParam('userId', 'NO-ID'));
     const userTodosUrl =
       'https://jsonplaceholder.typicode.com/todos?userId=' + userId;
@@ -40,6 +68,7 @@ class TodosScreen extends Component {
           {
             isLoading: false,
             dataSourceTodos: responseJson,
+            dataSourceTodosDefault: responseJson,
           },
           function() {},
         );
@@ -49,13 +78,75 @@ class TodosScreen extends Component {
       });
   }
 
+  handleSortButtonPressed = () => {
+    this.setState({isModalVisible: true});
+  };
+
+  handleSortOptionChanged = sortOptionValue => {
+    this.setState({currentSortOption: sortOptionValue});
+  };
+
+  handleSaveSortOption = shouldSave => {
+    if (shouldSave === true) {
+      this.setState({radioValue: this.state.currentSortOption});
+    } else {
+      this.setState({currentSortOption: this.state.radioValue});
+    }
+    this.setState({isModalVisible: false});
+
+    switch (this.state.currentSortOption) {
+      case 'default':
+        {
+          this.setState({dataSourceTodos: this.state.dataSourceTodosDefault});
+        }
+        break;
+      case 'name':
+        {
+          const todosSortedByName = []
+            .concat(this.state.dataSourceTodos)
+            .sort((a, b) => a.title > b.title);
+          this.setState({dataSourceTodos: todosSortedByName});
+        }
+        break;
+      case 'completion':
+        {
+          const todosSortedByCompletion = []
+            .concat(this.state.dataSourceTodos)
+            .sort((a, b) => a.completed > b.completed);
+          this.setState({dataSourceTodos: todosSortedByCompletion});
+        }
+        break;
+      default:
+    }
+  };
+
   render() {
     if (this.state.isLoading) {
       return <ActivityIndicator style={{padding: 20}} />;
     }
+
+    sortAppliedMessage = null;
+    if (this.state.currentSortOption !== 'default')
+      sortAppliedMessage = (
+        <Text style={styles.sortAplliedMessage}>
+          Todos sorted by:{' '}
+          {this.state.currentSortOption.charAt(0).toUpperCase() +
+            this.state.currentSortOption.slice(1)}
+        </Text>
+      );
+
     return (
       <SafeAreaView style={{flex: 1}}>
+        {sortAppliedMessage}
         <View style={styles.container}>
+          <Modal isVisible={this.state.isModalVisible}>
+            <TodosFilterComponent
+              filterOptions={this.state.filterOptions}
+              radioValue={this.state.currentSortOption}
+              sortOptionChanged={this.handleSortOptionChanged}
+              saveSortOption={this.handleSaveSortOption}
+            />
+          </Modal>
           <FlatList
             style={styles.usersList}
             data={this.state.dataSourceTodos}
@@ -85,6 +176,19 @@ class TodosScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  headerButton: {
+    color: 'white',
+    fontSize: 18,
+    padding: 10,
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+  },
+  sortAplliedMessage: {
+    fontFamily: 'Avenir',
+    fontSize: 15,
+    padding: 10,
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -106,6 +210,11 @@ const styles = StyleSheet.create({
   todoCheck: {
     width: '10%',
     padding: 5,
+  },
+  modalSortContainer: {
+    flex: 1,
+    alignItems: 'stretch',
+    justifyContent: 'center',
   },
 });
 
