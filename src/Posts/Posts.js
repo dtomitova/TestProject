@@ -1,9 +1,17 @@
 import React, {Fragment, Component} from 'react';
-import {View, SafeAreaView, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-ionicons';
-import { getPosts } from './actions/posts';
-import { connect } from 'react-redux';
+import {getPosts} from './actions/posts';
+import {connect} from 'react-redux';
+import SearchBar from './components/searchBar';
 
 class PostsScreen extends Component {
   static navigationOptions = ({navigation}) => {
@@ -18,9 +26,10 @@ class PostsScreen extends Component {
 
     this.state = {
       error: null,
-      isLoading: true,      
+      isLoading: true,
       activeSections: [],
-      openedPosts: [],
+      filteredActiveSections: null,
+      filteredPosts: null,
     };
   }
 
@@ -32,20 +41,15 @@ class PostsScreen extends Component {
 
   renderHeader = section => {
     return (
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          backgroundColor: 'lightblue',
-          margin: 4,
-        }}>
-        <Text style={styles.todoItem}>{section.title}</Text>
+      <View style={styles.accordionHeader}>
+        <Text style={styles.accordionHeaderTitle}>{section.title}</Text>
         <Icon
-          style={styles.todoCheck}
+          style={styles.accordionHeaderArrow}
           name={
-            this.state.activeSections.filter(
-              s => s == section.id - this.props.posts[0].id,
-            ).length > 0
+            (this.state.filteredActiveSections
+              ? this.state.filteredActiveSections
+              : this.state.activeSections
+            ).filter(s => s == section.id - this.props.posts[0].id).length > 0
               ? 'arrow-up'
               : 'arrow-down'
           }
@@ -56,14 +60,44 @@ class PostsScreen extends Component {
 
   renderContent = section => {
     return (
-      <View style={styles.userItem}>
+      <View style={styles.accordionContent}>
         <Text>{section.body}</Text>
       </View>
     );
   };
 
   updateSections = activeSections => {
-    this.setState({activeSections});
+    this.setState({activeSections: activeSections});
+  };
+
+  searchInputChanged = event => {
+    if (!event) {
+      this.setState({currentInputText: null});
+      this.setState({filteredPosts: null});
+      this.setState({filteredActiveSections: null});
+      return;
+    }
+
+    const {text} = event.nativeEvent;
+    const trimmedText = text.trimLeft();
+    this.setState({currentInputText: trimmedText});
+
+    const filtered = this.props.posts.filter(post => {
+      return (
+        post.title.toLowerCase().includes(trimmedText.toLowerCase()) ||
+        post.body.toLowerCase().includes(trimmedText.toLowerCase())
+      );
+    });
+    this.setState({filteredPosts: filtered});
+
+    if (filtered) {
+      const filteredActive = filtered.filter(post =>
+        this.state.activeSections.includes(post),
+      );
+      this.setState({filteredActiveSections: filteredActive});
+    } else {
+      this.setState({filteredActiveSections: null});
+    }
   };
 
   render() {
@@ -77,15 +111,21 @@ class PostsScreen extends Component {
 
     return (
       <SafeAreaView style={{flex: 1}}>
+        <SearchBar handleSearchInputChanged={this.searchInputChanged} />
         <View style={styles.containerStartTop}>
           <Accordion
-            style={{justifyContent: 'flex-start', alignItems: 'center'}}
-            sections={this.props.posts}
+            style={styles.accordion}
+            sections={
+              this.state.filteredPosts !== null
+                ? this.state.filteredPosts
+                : this.props.posts
+            }
             activeSections={this.state.activeSections}
             renderHeader={this.renderHeader}
             renderContent={this.renderContent}
             onChange={this.updateSections}
             expandMultiple="true"
+            underlayColor="white"
           />
         </View>
       </SafeAreaView>
@@ -95,18 +135,20 @@ class PostsScreen extends Component {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    getPosts: userId => dispatch(getPosts(userId))
-  }
-}
+    getPosts: userId => dispatch(getPosts(userId)),
+  };
+};
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    posts: state.posts.posts
-  }
-}
+    posts: state.posts.posts,
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostsScreen);
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PostsScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -117,6 +159,8 @@ const styles = StyleSheet.create({
   containerStartTop: {
     justifyContent: 'flex-start',
     alignItems: 'center',
+    marginLeft: 8,
+    marginRight: 8,
   },
   title: {
     fontFamily: 'Avenir',
@@ -124,21 +168,32 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginHorizontal: 5,
   },
-  usersList: {
-    margin: 10,
+  accordion: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
-  userItem: {
-    fontFamily: 'Avenir',
+  accordionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     backgroundColor: 'lightblue',
+    margin: 4,
     padding: 5,
-    marginVertical: 4,
-    marginHorizontal: 4,
+    borderRadius: 8,
   },
-  todoItem: {
+  accordionContent: {
+    fontFamily: 'Avenir',
+    padding: 5,
+    marginLeft: 20,
+    borderColor: 'lightblue',
+    borderWidth: 1,
+    borderRadius: 10,
+  },
+  accordionHeaderTitle: {
     width: '90%',
   },
-  todoCheck: {
+  accordionHeaderArrow: {
     width: '10%',
     padding: 5,
-  }
+    fontSize: 20,
+  },
 });
