@@ -1,61 +1,34 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
   View,
-  ActivityIndicator,
-  TouchableOpacity,
   StyleSheet,
-  Text,
   TextInput,
 } from 'react-native';
 import Icon from 'react-native-ionicons';
 
-class SearchBar extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      currentInputText: null,
-    };
-  }
+const SearchBar = props => {
+  const { handleSearchChange, searchText } = props;
 
-  handleSearchChange = newSearch => {
-    const trimmedSearch = newSearch.trimLeft();
-    if (trimmedSearch === null || trimmedSearch === '') {
-      this.setState({currentInputText: null});
-    } else {
-      this.setState({currentInputText: trimmedSearch});
-    }
-  };
-
-  handleDeleteInputText = () => {
-    this.setState({currentInputText: null});
-    this.props.handleSearchInputChanged();
-  };
-
-  render() {
-    return (
-      <View style={styles.searchContainer}>
-        <TextInput
-          value={this.state.currentInputText}
-          placeholder="Search"
-          style={styles.textInput}
-          onChange={this.props.handleSearchInputChanged}
-          onChangeText={text => this.handleSearchChange(text)}
-        />
-        <Icon
-          onPress={this.handleDeleteInputText}
-          style={styles.searchIcon}
-          name={
-            this.state.currentInputText !== null ? 'close-circle' : 'search'
-          }
-        />
-      </View>
-    );
-  }
+  return (
+    <View style={styles.searchBarContainer}>
+      <TextInput
+        value={searchText}
+        placeholder="Search"
+        style={styles.searchBarTextInput}
+        onChangeText={text => handleSearchChange(text)}
+      />
+      <Icon
+        onPress={() => handleSearchChange('')}
+        style={styles.searchBarIcon}
+        name={searchText !== '' ? 'close-circle' : 'search'}
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-  searchContainer: {
+  searchBarContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'stretch',
@@ -66,12 +39,12 @@ const styles = StyleSheet.create({
     height: 34,
     margin: 7,
   },
-  textInput: {
+  searchBarTextInput: {
     marginLeft: 8,
     height: 34,
     width: '85%',
   },
-  searchIcon: {
+  searchBarIcon: {
     width: '15%',
     color: 'gray',
     fontSize: 20,

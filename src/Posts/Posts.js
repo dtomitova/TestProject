@@ -1,11 +1,10 @@
-import React, {Fragment, Component} from 'react';
+import React, {Component} from 'react';
 import {
   View,
   SafeAreaView,
   Text,
   StyleSheet,
-  ActivityIndicator,
-  Alert,
+  ScrollView
 } from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-ionicons';
@@ -21,17 +20,13 @@ class PostsScreen extends Component {
     };
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      error: null,
-      isLoading: true,
-      activeSections: [],
-      filteredActiveSections: null,
-      filteredPosts: null,
-    };
-  }
+  state = {
+    searchText: '',
+    error: null,
+    isLoading: true,
+    allPosts: [],
+  };
+  
 
   componentDidMount() {
     const {navigation} = this.props;
@@ -39,66 +34,58 @@ class PostsScreen extends Component {
     this.props.getPosts(userId);
   }
 
-  renderHeader = section => {
+  componentDidUpdate(prevProps) {
+    if (prevProps.posts !== this.props.posts) {
+      this.setState({ allPosts: this.props.posts });
+    }
+  }
+
+  renderHeader = post => {
     return (
       <View style={styles.accordionHeader}>
-        <Text style={styles.accordionHeaderTitle}>{section.title}</Text>
+        <Text style={styles.accordionHeaderTitle}>{post.title}</Text>
         <Icon
           style={styles.accordionHeaderArrow}
-          name={
-            (this.state.filteredActiveSections
-              ? this.state.filteredActiveSections
-              : this.state.activeSections
-            ).filter(s => s == section.id - this.props.posts[0].id).length > 0
-              ? 'arrow-up'
-              : 'arrow-down'
-          }
+          name={post.opened  ? 'arrow-up' : 'arrow-down'}
         />
       </View>
     );
   };
 
-  renderContent = section => {
+  renderContent = post => {
     return (
       <View style={styles.accordionContent}>
-        <Text>{section.body}</Text>
+        <Text>{post.body}</Text>
       </View>
     );
   };
 
-  updateSections = activeSections => {
-    this.setState({activeSections: activeSections});
+  updateSections = activeSections => {   
+    const allPosts = this.state
+    .allPosts
+    .map(post => ({...post, opened: false}));
+
+    activeSections.forEach(index => {
+      allPosts[index] = {...allPosts[index], opened: true};
+    }); 
+    this.setState({ allPosts });
   };
 
-  searchInputChanged = event => {
-    if (!event) {
-      this.setState({currentInputText: null});
-      this.setState({filteredPosts: null});
-      this.setState({filteredActiveSections: null});
-      return;
-    }
-
-    const {text} = event.nativeEvent;
-    const trimmedText = text.trimLeft();
-    this.setState({currentInputText: trimmedText});
-
-    const filtered = this.props.posts.filter(post => {
-      return (
+  getFilteredPosts = () => {
+    const trimmedText = this.state.searchText.trimLeft();
+    const filteredPosts = this.state.allPosts.filter(post => (
         post.title.toLowerCase().includes(trimmedText.toLowerCase()) ||
         post.body.toLowerCase().includes(trimmedText.toLowerCase())
-      );
-    });
-    this.setState({filteredPosts: filtered});
+    ));
+    return filteredPosts;
+  }
 
-    if (filtered) {
-      const filteredActive = filtered.filter(post =>
-        this.state.activeSections.includes(post),
-      );
-      this.setState({filteredActiveSections: filteredActive});
-    } else {
-      this.setState({filteredActiveSections: null});
-    }
-  };
+  indexesOfOpenedPosts = () => 
+    this.getFilteredPosts()
+    .map((_, i) => i) // [0, 1, 2, 3, 4, 5, 6, 7]
+    .filter(i => this.getFilteredPosts()[i].opened); // [0, 1, 5, 9]
+
+  
 
   render() {
     // if (this.state.isLoading) {
@@ -109,25 +96,26 @@ class PostsScreen extends Component {
     //   );
     // }
 
+   const filteredPosts = this.getFilteredPosts();
+
     return (
       <SafeAreaView style={{flex: 1}}>
-        <SearchBar handleSearchInputChanged={this.searchInputChanged} />
-        <View style={styles.containerStartTop}>
+        <SearchBar 
+          searchText={this.state.searchText} 
+          handleSearchChange={searchText => this.setState({ searchText })} 
+        />
+        <ScrollView contentContainerStyle={styles.containerStartTop}>
           <Accordion
             style={styles.accordion}
-            sections={
-              this.state.filteredPosts !== null
-                ? this.state.filteredPosts
-                : this.props.posts
-            }
-            activeSections={this.state.activeSections}
+            sections={filteredPosts}
+            activeSections={this.indexesOfOpenedPosts()}
             renderHeader={this.renderHeader}
             renderContent={this.renderContent}
             onChange={this.updateSections}
-            expandMultiple="true"
+            expandMultiple={true}
             underlayColor="white"
           />
-        </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }
