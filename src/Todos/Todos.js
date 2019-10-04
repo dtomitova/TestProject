@@ -20,7 +20,9 @@ import {
   Left,
 } from 'native-base';
 import Modal from 'react-native-modal';
-import TodosFilterComponent from './TodosFilterComponent/TodosFilterComponent';
+import TodosFilterComponent from './components/TodosFilterComponent/TodosFilterComponent';
+import {getTodos} from './actions/todos';
+import {connect} from 'react-redux';
 
 class TodosScreen extends Component {
   static navigationOptions = ({navigation}) => {
@@ -38,10 +40,10 @@ class TodosScreen extends Component {
   state = {
     error: null,
     isLoading: true,
-    todos: [],
     isModalVisible: false,
     radioValue: 'default',
     currentRadioValue: 'default',
+    allTodos: [],
     filterOptions: [
       {title: 'Default', value: 'default'},
       {title: 'Name', value: 'name'},
@@ -53,23 +55,13 @@ class TodosScreen extends Component {
     const {navigation} = this.props;
     navigation.setParams({headerRightButtonPressed: this.sortButtonPressed});
     const userId = JSON.stringify(navigation.getParam('userId', 'NO-ID'));
-    const userTodosUrl =
-      'https://jsonplaceholder.typicode.com/todos?userId=' + userId;
+    this.props.getTodos(userId);
+  }
 
-    return fetch(userTodosUrl)
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState(
-          {
-            isLoading: false,
-            todos: responseJson,
-          },
-          function() {},
-        );
-      })
-      .catch(error => {
-        this.setState({error, isLoading: false});
-      });
+  componentDidUpdate(prevProps) {
+    if (prevProps.todos !== this.props.todos) {
+      this.setState({allTodos: this.props.todos});
+    }
   }
 
   sortButtonPressed = () => {
@@ -77,15 +69,15 @@ class TodosScreen extends Component {
   };
 
   getSortedTodos = () => {
-    const {radioValue, todos} = this.state;
+    const {radioValue, allTodos} = this.state;
 
     switch (radioValue) {
       case 'name':
-        return [...todos].sort((a, b) => a.title > b.title);
+        return [...allTodos].sort((a, b) => a.title > b.title);
       case 'completion':
-        return [...todos].sort((a, b) => a.completed > b.completed);
+        return [...allTodos].sort((a, b) => a.completed > b.completed);
       default: {
-        return todos;
+        return allTodos;
       }
     }
   };
@@ -105,9 +97,9 @@ class TodosScreen extends Component {
     const {radioValue, filterOptions, currentRadioValue} = this.state;
     const sortedTodos = this.getSortedTodos();
 
-    if (this.state.isLoading) {
-      return <ActivityIndicator style={{padding: 20}} />;
-    }
+    // if (this.state.isLoading) {
+    //   return <ActivityIndicator style={{padding: 20}} />;
+    // }
 
     sortAppliedMessage = null;
     if (radioValue !== 'default')
@@ -149,6 +141,23 @@ class TodosScreen extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    getTodos: userId => dispatch(getTodos(userId)),
+  };
+};
+
+const mapStateToProps = state => {
+  return {
+    todos: state.todos.todos,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TodosScreen);
+
 const styles = StyleSheet.create({
   headerButton: {
     color: 'white',
@@ -184,5 +193,3 @@ const styles = StyleSheet.create({
     padding: 5,
   },
 });
-
-export default TodosScreen;
