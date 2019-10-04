@@ -1,11 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  SafeAreaView,
-  Text,
-  StyleSheet,
-  ScrollView
-} from 'react-native';
+import {View, SafeAreaView, Text, StyleSheet, ScrollView} from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-ionicons';
 import {getPosts} from './actions/posts';
@@ -26,7 +20,6 @@ class PostsScreen extends Component {
     isLoading: true,
     allPosts: [],
   };
-  
 
   componentDidMount() {
     const {navigation} = this.props;
@@ -36,7 +29,7 @@ class PostsScreen extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.posts !== this.props.posts) {
-      this.setState({ allPosts: this.props.posts });
+      this.setState({allPosts: this.props.posts});
     }
   }
 
@@ -46,7 +39,7 @@ class PostsScreen extends Component {
         <Text style={styles.accordionHeaderTitle}>{post.title}</Text>
         <Icon
           style={styles.accordionHeaderArrow}
-          name={post.opened  ? 'arrow-up' : 'arrow-down'}
+          name={post.opened ? 'arrow-up' : 'arrow-down'}
         />
       </View>
     );
@@ -60,32 +53,32 @@ class PostsScreen extends Component {
     );
   };
 
-  updateSections = activeSections => {   
-    const allPosts = this.state
-    .allPosts
-    .map(post => ({...post, opened: false}));
+  updateSections = activeSections => {
+    const allPosts = this.state.allPosts.map(post => ({
+      ...post,
+      opened: false,
+    }));
 
     activeSections.forEach(index => {
       allPosts[index] = {...allPosts[index], opened: true};
-    }); 
-    this.setState({ allPosts });
+    });
+    this.setState({allPosts});
   };
 
   getFilteredPosts = () => {
     const trimmedText = this.state.searchText.trimLeft();
-    const filteredPosts = this.state.allPosts.filter(post => (
+    const filteredPosts = this.state.allPosts.filter(
+      post =>
         post.title.toLowerCase().includes(trimmedText.toLowerCase()) ||
-        post.body.toLowerCase().includes(trimmedText.toLowerCase())
-    ));
+        post.body.toLowerCase().includes(trimmedText.toLowerCase()),
+    );
     return filteredPosts;
-  }
+  };
 
-  indexesOfOpenedPosts = () => 
+  indexesOfOpenedPosts = () =>
     this.getFilteredPosts()
-    .map((_, i) => i) // [0, 1, 2, 3, 4, 5, 6, 7]
-    .filter(i => this.getFilteredPosts()[i].opened); // [0, 1, 5, 9]
-
-  
+      .map((_, i) => i)
+      .filter(i => this.getFilteredPosts()[i].opened);
 
   render() {
     // if (this.state.isLoading) {
@@ -96,13 +89,13 @@ class PostsScreen extends Component {
     //   );
     // }
 
-   const filteredPosts = this.getFilteredPosts();
+    const filteredPosts = this.getFilteredPosts();
 
     return (
       <SafeAreaView style={{flex: 1}}>
-        <SearchBar 
-          searchText={this.state.searchText} 
-          handleSearchChange={searchText => this.setState({ searchText })} 
+        <SearchBar
+          searchText={this.state.searchText}
+          handleSearchChange={searchText => this.setState({searchText})}
         />
         <ScrollView contentContainerStyle={styles.containerStartTop}>
           <Accordion

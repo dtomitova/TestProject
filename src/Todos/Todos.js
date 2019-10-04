@@ -35,25 +35,20 @@ class TodosScreen extends Component {
     };
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      error: null,
-      isLoading: true,
-      dataSourceTodos: null,
-      dataSourceTodosDefault: null,
-      isModalVisible: false,
-      radioValue: 'default',
-      currentSortOption: 'default',
-      filterOptions: [
-        {title: 'Default', value: 'default'},
-        {title: 'Name', value: 'name'},
-        {title: 'Completion', value: 'completion'},
-      ],
-    };
-  }
-
+  state = {
+    error: null,
+    isLoading: true,
+    dataSourceTodos: null,
+    dataSourceTodosDefault: null,
+    isModalVisible: false,
+    radioValue: 'default',
+    currentSortOption: 'default',
+    filterOptions: [
+      {title: 'Default', value: 'default'},
+      {title: 'Name', value: 'name'},
+      {title: 'Completion', value: 'completion'},
+    ],
+  };
   componentDidMount() {
     const {navigation} = this.props;
     navigation.setParams({handleSave: this.handleSortButtonPressed});

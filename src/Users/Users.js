@@ -1,13 +1,5 @@
 import React, {Fragment, Component} from 'react';
-import {
-  View,
-  FlatList,
-  ActivityIndicator,
-  SafeAreaView,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-} from 'react-native';
+import {ActivityIndicator, SafeAreaView} from 'react-native';
 import UsersListView from './components/UsersListView';
 
 class UsersScreen extends Component {
@@ -15,14 +7,11 @@ class UsersScreen extends Component {
     title: 'Users',
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      error: null,
-      dataSource: null,
-    };
-  }
+  state = {
+    isLoading: true,
+    error: null,
+    allUsers: null,
+  };
 
   componentDidMount() {
     return fetch('https://jsonplaceholder.typicode.com/users')
@@ -31,7 +20,7 @@ class UsersScreen extends Component {
         this.setState(
           {
             isLoading: false,
-            dataSource: responseJson,
+            allUsers: responseJson,
           },
           function() {},
         );
@@ -53,22 +42,14 @@ class UsersScreen extends Component {
     }
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView>
         <UsersListView
-          usersDataSource={this.state.dataSource}
+          usersDataSource={this.state.allUsers}
           userSelected={this.handleUserSelection}
         />
       </SafeAreaView>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'stretch',
-  },
-});
 
 export default UsersScreen;

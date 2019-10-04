@@ -1,27 +1,23 @@
 import React, {Component} from 'react';
-import {
-  View,
-  FlatList,
-  ActivityIndicator,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-} from 'react-native';
+import {FlatList, TouchableOpacity, StyleSheet, Text} from 'react-native';
 
-const userListView = props => (
-  <FlatList
-    style={styles.usersList}
-    data={props.usersDataSource}
-    renderItem={({item}) => (
-      <TouchableOpacity onPress={props.userSelected.bind(this, item.id)}>
-        <Text style={styles.userItem}>
-          {item.name}, {item.username}
-        </Text>
-      </TouchableOpacity>
-    )}
-    keyExtractor={({id}, index) => id.toString()}
-  />
-);
+const userListView = props => {
+  const {usersDataSource, userSelected} = props;
+  return (
+    <FlatList
+      style={styles.usersList}
+      data={usersDataSource}
+      renderItem={({item}) => (
+        <TouchableOpacity onPress={userSelected.bind(this, item.id)}>
+          <Text style={styles.userItem}>
+            {item.name}, {item.username}
+          </Text>
+        </TouchableOpacity>
+      )}
+      keyExtractor={({id}) => id.toString()}
+    />
+  );
+};
 
 const styles = StyleSheet.create({
   usersList: {
@@ -30,9 +26,10 @@ const styles = StyleSheet.create({
   userItem: {
     fontFamily: 'Avenir',
     backgroundColor: 'lightblue',
-    padding: 5,
-    marginVertical: 4,
-    marginHorizontal: 4,
+    padding: 10,
+    margin: 4,
+
+    borderRadius: 4,
   },
 });
 
