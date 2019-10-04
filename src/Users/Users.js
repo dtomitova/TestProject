@@ -1,6 +1,8 @@
 import React, {Fragment, Component} from 'react';
 import {ActivityIndicator, SafeAreaView} from 'react-native';
 import UsersListView from './components/UsersListView';
+import {getUsers} from './actions/users';
+import {connect} from 'react-redux';
 
 class UsersScreen extends Component {
   static navigationOptions = {
@@ -10,24 +12,17 @@ class UsersScreen extends Component {
   state = {
     isLoading: true,
     error: null,
-    allUsers: null,
+    allUsers: [],
   };
 
   componentDidMount() {
-    return fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState(
-          {
-            isLoading: false,
-            allUsers: responseJson,
-          },
-          function() {},
-        );
-      })
-      .catch(error => {
-        this.setState({error, isLoading: false});
-      });
+    this.props.getUsers;
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.users !== this.props.users) {
+      this.setState({allUsers: this.props.users});
+    }
   }
 
   handleUserSelection = userId => {
@@ -37,9 +32,9 @@ class UsersScreen extends Component {
   };
 
   render() {
-    if (this.state.isLoading) {
-      return <ActivityIndicator style={{padding: 20}} />;
-    }
+    // if (this.state.isLoading) {
+    //   return <ActivityIndicator style={{padding: 20}} />;
+    // }
 
     return (
       <SafeAreaView>
@@ -52,4 +47,19 @@ class UsersScreen extends Component {
   }
 }
 
-export default UsersScreen;
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    getUsers: dispatch(getUsers),
+  };
+};
+
+const mapStateToProps = state => {
+  return {
+    users: state.users.users,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(UsersScreen);
