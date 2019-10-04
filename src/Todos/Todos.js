@@ -28,7 +28,7 @@ class TodosScreen extends Component {
     return {
       title: navigation.getParam('username') + "'s Todos",
       headerRight: (
-        <TouchableOpacity onPress={params.handleSave}>
+        <TouchableOpacity onPress={params.headerRightButtonPressed}>
           <Text style={styles.headerButton}>Sort</Text>
         </TouchableOpacity>
       ),
@@ -38,20 +38,20 @@ class TodosScreen extends Component {
   state = {
     error: null,
     isLoading: true,
-    dataSourceTodos: null,
-    dataSourceTodosDefault: null,
+    todos: [],
     isModalVisible: false,
     radioValue: 'default',
-    currentSortOption: 'default',
+    currentRadioValue: 'default',
     filterOptions: [
       {title: 'Default', value: 'default'},
       {title: 'Name', value: 'name'},
       {title: 'Completion', value: 'completion'},
     ],
   };
+
   componentDidMount() {
     const {navigation} = this.props;
-    navigation.setParams({handleSave: this.handleSortButtonPressed});
+    navigation.setParams({headerRightButtonPressed: this.sortButtonPressed});
     const userId = JSON.stringify(navigation.getParam('userId', 'NO-ID'));
     const userTodosUrl =
       'https://jsonplaceholder.typicode.com/todos?userId=' + userId;
@@ -62,8 +62,7 @@ class TodosScreen extends Component {
         this.setState(
           {
             isLoading: false,
-            dataSourceTodos: responseJson,
-            dataSourceTodosDefault: responseJson,
+            todos: responseJson,
           },
           function() {},
         );
@@ -73,98 +72,78 @@ class TodosScreen extends Component {
       });
   }
 
-  handleSortButtonPressed = () => {
+  sortButtonPressed = () => {
     this.setState({isModalVisible: true});
   };
 
-  handleSortOptionChanged = sortOptionValue => {
-    this.setState({currentSortOption: sortOptionValue});
+  getSortedTodos = () => {
+    const {radioValue, todos} = this.state;
+
+    switch (radioValue) {
+      case 'name':
+        return [...todos].sort((a, b) => a.title > b.title);
+      case 'completion':
+        return [...todos].sort((a, b) => a.completed > b.completed);
+      default: {
+        return todos;
+      }
+    }
+  };
+
+  handleSortOptionChanged = currentRadioValue => {
+    this.setState({currentRadioValue});
   };
 
   handleSaveSortOption = shouldSave => {
     if (shouldSave === true) {
-      this.setState({radioValue: this.state.currentSortOption});
-    } else {
-      this.setState({currentSortOption: this.state.radioValue});
+      this.setState({radioValue: this.state.currentRadioValue});
     }
     this.setState({isModalVisible: false});
-
-    switch (this.state.currentSortOption) {
-      case 'default':
-        {
-          this.setState({dataSourceTodos: this.state.dataSourceTodosDefault});
-        }
-        break;
-      case 'name':
-        {
-          const todosSortedByName = []
-            .concat(this.state.dataSourceTodos)
-            .sort((a, b) => a.title > b.title);
-          this.setState({dataSourceTodos: todosSortedByName});
-        }
-        break;
-      case 'completion':
-        {
-          const todosSortedByCompletion = []
-            .concat(this.state.dataSourceTodos)
-            .sort((a, b) => a.completed > b.completed);
-          this.setState({dataSourceTodos: todosSortedByCompletion});
-        }
-        break;
-      default:
-    }
   };
 
   render() {
+    const {radioValue, filterOptions, currentRadioValue} = this.state;
+    const sortedTodos = this.getSortedTodos();
+
     if (this.state.isLoading) {
       return <ActivityIndicator style={{padding: 20}} />;
     }
 
     sortAppliedMessage = null;
-    if (this.state.currentSortOption !== 'default')
+    if (radioValue !== 'default')
       sortAppliedMessage = (
         <Text style={styles.sortAplliedMessage}>
           Todos sorted by:{' '}
-          {this.state.currentSortOption.charAt(0).toUpperCase() +
-            this.state.currentSortOption.slice(1)}
+          {radioValue.charAt(0).toUpperCase() + radioValue.slice(1)}
         </Text>
       );
 
     return (
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView>
         {sortAppliedMessage}
-        <View style={styles.container}>
-          <Modal isVisible={this.state.isModalVisible}>
-            <TodosFilterComponent
-              filterOptions={this.state.filterOptions}
-              radioValue={this.state.currentSortOption}
-              sortOptionChanged={this.handleSortOptionChanged}
-              saveSortOption={this.handleSaveSortOption}
-            />
-          </Modal>
-          <FlatList
-            style={styles.usersList}
-            data={this.state.dataSourceTodos}
-            renderItem={({item}) => (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                  backgroundColor: 'lightblue',
-                  margin: 4,
-                }}>
-                <Text style={[styles.userItem, styles.todoItem]}>
-                  {item.title}
-                </Text>
-                <Icon
-                  style={styles.todoCheck}
-                  name={item.completed === true ? 'checkmark' : 'close'}
-                />
-              </View>
-            )}
-            keyExtractor={({id}, index) => id.toString()}
+        <Modal isVisible={this.state.isModalVisible}>
+          <TodosFilterComponent
+            color="black"
+            radioButtonOptions={filterOptions}
+            radioValue={currentRadioValue}
+            sortOptionChanged={this.handleSortOptionChanged}
+            saveSortOption={this.handleSaveSortOption}
           />
-        </View>
+        </Modal>
+        <FlatList
+          style={styles.todosList}
+          data={sortedTodos}
+          renderItem={({item}) => (
+            <View style={styles.todoItemContainer}>
+              <Text style={styles.todoItem}>{item.title}</Text>
+              <Icon
+                style={styles.todoIcon}
+                name={item.completed === true ? 'checkmark' : 'close'}
+              />
+            </View>
+          )}
+          keyExtractor={({id}, index) => id.toString()}
+        />
       </SafeAreaView>
     );
   }
@@ -181,35 +160,28 @@ const styles = StyleSheet.create({
   sortAplliedMessage: {
     fontFamily: 'Avenir',
     fontSize: 15,
-    padding: 10,
+    marginTop: 8,
+    fontWeight: 'bold',
     textAlign: 'center',
   },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'stretch',
-  },
-  usersList: {
-    margin: 10,
-  },
-  userItem: {
-    fontFamily: 'Avenir',
+  todoItemContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     backgroundColor: 'lightblue',
-    padding: 5,
-    marginVertical: 4,
-    marginHorizontal: 4,
+    padding: 6,
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 6,
+    borderRadius: 4,
   },
   todoItem: {
     width: '90%',
-  },
-  todoCheck: {
-    width: '10%',
+    fontFamily: 'Avenir',
     padding: 5,
   },
-  modalSortContainer: {
-    flex: 1,
-    alignItems: 'stretch',
-    justifyContent: 'center',
+  todoIcon: {
+    width: '10%',
+    padding: 5,
   },
 });
 

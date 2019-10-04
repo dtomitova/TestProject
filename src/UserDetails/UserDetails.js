@@ -1,11 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  ActivityIndicator,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-} from 'react-native';
+import {View, ActivityIndicator, StyleSheet, Text} from 'react-native';
 import RoundedButtonWithTitleAndIcon from '../globalComponents/roundedButtonWithTitleAndIcon';
 
 class UserDetailsScreen extends Component {

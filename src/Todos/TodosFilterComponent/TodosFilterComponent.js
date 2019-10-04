@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   View,
-  FlatList,
   SafeAreaView,
   TouchableOpacity,
   StyleSheet,
@@ -21,7 +20,7 @@ const todosFilterComponent = props => (
   <SafeAreaView style={{flex: 1}}>
     <Container>
       <Content>
-        {props.filterOptions.map((data, key) => {
+        {props.radioButtonOptions.map((data, key) => {
           return (
             <ListItem key={key}>
               <Left>
@@ -31,7 +30,7 @@ const todosFilterComponent = props => (
                 <Radio
                   style={styles.radioButton}
                   onPress={props.sortOptionChanged.bind(this, data.value)}
-                  selectedColor={'black'}
+                  selectedColor={props.color}
                   selected={props.radioValue == data.value}
                 />
               </Right>
