@@ -1,7 +1,7 @@
 import {SET_USER_DETAILS, SET_IS_LOADING} from '../actions/actionTypes';
 
 const initialState = {
-  userDetails: [],
+  userDetails: null,
   isLoading: true,
 };
 
