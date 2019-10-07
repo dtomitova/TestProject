@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {View, ActivityIndicator, StyleSheet, Text} from 'react-native';
 import RoundedButtonWithTitleAndIcon from '../globalComponents/roundedButtonWithTitleAndIcon';
+import {getUserDetails, getIsLoading} from './actions/userDetails';
+import {connect} from 'react-redux';
 
 class UserDetailsScreen extends Component {
   static navigationOptions = {
@@ -10,56 +12,39 @@ class UserDetailsScreen extends Component {
 
   state = {
     error: null,
-    isLoading: true,
-    user: null,
   };
 
   componentDidMount() {
     const {navigation} = this.props;
     const userId = JSON.stringify(navigation.getParam('userId', 'NO-ID'));
-    const userDetailsUrl =
-      'https://jsonplaceholder.typicode.com/users/' + userId;
-
-    return fetch(userDetailsUrl)
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState(
-          {
-            isLoading: false,
-            user: responseJson,
-          },
-          function() {},
-        );
-      })
-      .catch(error => {
-        this.setState({error, isLoading: false});
-      });
+    this.props.getUserDetails(userId);
+    this.props.getIsLoading(true);
   }
 
   buttonPressedWithTitle = title => {
     this.props.navigation.navigate(title, {
-      userId: this.state.user.id,
-      username: this.state.user.username,
+      userId: this.props.userDetails.id,
+      username: this.props.userDetails.username,
     });
   };
 
   render() {
-    const {user} = this.state;
+    const {userDetails, isLoading} = this.props;
 
-    if (this.state.isLoading) {
+    if (isLoading) {
       return <ActivityIndicator style={{padding: 20}} />;
     }
 
     return (
       <View style={styles.container}>
         <View style={styles.userDetailsBaseInfoContainer}>
-          <Text>{user.name}</Text>
-          <Text>{user.username}</Text>
-          <Text>{user.company['name']}</Text>
+          <Text>{userDetails.name}</Text>
+          <Text>{userDetails.username}</Text>
+          <Text>{userDetails.company['name']}</Text>
         </View>
         <View style={styles.userDetailsContactsContainer}>
-          <Text>{user.phone}</Text>
-          <Text>{user.website}</Text>
+          <Text>{userDetails.phone}</Text>
+          <Text>{userDetails.website}</Text>
         </View>
         <View style={styles.userDetailsButtonsContainer}>
           <RoundedButtonWithTitleAndIcon
@@ -77,6 +62,25 @@ class UserDetailsScreen extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    getUserDetails: userId => dispatch(getUserDetails(userId)),
+    getIsLoading: isLoading => dispatch(getIsLoading(isLoading)),
+  };
+};
+
+const mapStateToProps = state => {
+  return {
+    userDetails: state.userDetails.userDetails,
+    isLoading: state.userDetails.isLoading,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(UserDetailsScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -99,5 +103,3 @@ const styles = StyleSheet.create({
     height: '80%',
   },
 });
-
-export default UserDetailsScreen;
