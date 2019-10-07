@@ -1,4 +1,4 @@
-import {} from './actionTypes';
+import {SET_USERS} from './actionTypes';
 
 export const getUsers = () => {
   return dispatch => {

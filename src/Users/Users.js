@@ -12,17 +12,10 @@ class UsersScreen extends Component {
   state = {
     isLoading: true,
     error: null,
-    allUsers: [],
   };
 
   componentDidMount() {
-    this.props.getUsers;
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.users !== this.props.users) {
-      this.setState({allUsers: this.props.users});
-    }
+    this.props.getUsers();
   }
 
   handleUserSelection = userId => {
@@ -39,7 +32,7 @@ class UsersScreen extends Component {
     return (
       <SafeAreaView>
         <UsersListView
-          usersDataSource={this.state.allUsers}
+          usersDataSource={this.props.users}
           userSelected={this.handleUserSelection}
         />
       </SafeAreaView>
@@ -49,7 +42,7 @@ class UsersScreen extends Component {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    getUsers: dispatch(getUsers),
+    getUsers: () => dispatch(getUsers()),
   };
 };
 
