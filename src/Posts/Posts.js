@@ -1,8 +1,15 @@
 import React, {Component} from 'react';
-import {View, SafeAreaView, Text, StyleSheet, ScrollView} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  Text,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-ionicons';
-import {getPosts} from './actions/posts';
+import {getPosts, getIsLoading} from './actions/posts';
 import {connect} from 'react-redux';
 import SearchBar from './components/searchBar';
 
@@ -17,7 +24,6 @@ class PostsScreen extends Component {
   state = {
     searchText: '',
     error: null,
-    isLoading: true,
     allPosts: [],
   };
 
@@ -25,6 +31,7 @@ class PostsScreen extends Component {
     const {navigation} = this.props;
     const userId = JSON.stringify(navigation.getParam('userId', 'NO-ID'));
     this.props.getPosts(userId);
+    this.props.getIsLoading(true);
   }
 
   componentDidUpdate(prevProps) {
@@ -81,13 +88,9 @@ class PostsScreen extends Component {
       .filter(i => this.getFilteredPosts()[i].opened);
 
   render() {
-    // if (this.state.isLoading) {
-    //   return (
-    //     <View style={{flex: 1, padding: 20}}>
-    //       <ActivityIndicator />
-    //     </View>
-    //   );
-    // }
+    if (this.props.isLoading) {
+      return <ActivityIndicator style={{padding: 60}} />;
+    }
 
     const filteredPosts = this.getFilteredPosts();
 
@@ -117,12 +120,14 @@ class PostsScreen extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getPosts: userId => dispatch(getPosts(userId)),
+    getIsLoading: isLoading => dispatch(getIsLoading(isLoading)),
   };
 };
 
 const mapStateToProps = state => {
   return {
     posts: state.posts.posts,
+    isLoading: state.users.isLoading,
   };
 };
 

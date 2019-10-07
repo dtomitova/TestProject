@@ -21,7 +21,7 @@ import {
 } from 'native-base';
 import Modal from 'react-native-modal';
 import TodosFilterComponent from './components/TodosFilterComponent/TodosFilterComponent';
-import {getTodos} from './actions/todos';
+import {getTodos, getIsLoading} from './actions/todos';
 import {connect} from 'react-redux';
 
 class TodosScreen extends Component {
@@ -39,7 +39,6 @@ class TodosScreen extends Component {
 
   state = {
     error: null,
-    isLoading: true,
     isModalVisible: false,
     radioValue: 'default',
     currentRadioValue: 'default',
@@ -56,6 +55,7 @@ class TodosScreen extends Component {
     navigation.setParams({headerRightButtonPressed: this.sortButtonPressed});
     const userId = JSON.stringify(navigation.getParam('userId', 'NO-ID'));
     this.props.getTodos(userId);
+    this.props.getIsLoading(true);
   }
 
   componentDidUpdate(prevProps) {
@@ -97,10 +97,6 @@ class TodosScreen extends Component {
     const {radioValue, filterOptions, currentRadioValue} = this.state;
     const sortedTodos = this.getSortedTodos();
 
-    // if (this.state.isLoading) {
-    //   return <ActivityIndicator style={{padding: 20}} />;
-    // }
-
     sortAppliedMessage = null;
     if (radioValue !== 'default')
       sortAppliedMessage = (
@@ -110,8 +106,12 @@ class TodosScreen extends Component {
         </Text>
       );
 
+    if (this.props.isLoading) {
+      return <ActivityIndicator style={{padding: 20}} />;
+    }
+
     return (
-      <SafeAreaView>
+      <SafeAreaView style={{flex: 1}}>
         {sortAppliedMessage}
         <Modal isVisible={this.state.isModalVisible}>
           <TodosFilterComponent
@@ -144,12 +144,14 @@ class TodosScreen extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getTodos: userId => dispatch(getTodos(userId)),
+    getIsLoading: isLoading => dispatch(getIsLoading(isLoading)),
   };
 };
 
 const mapStateToProps = state => {
   return {
     todos: state.todos.todos,
+    isLoading: state.users.isLoading,
   };
 };
 

@@ -1,7 +1,8 @@
-import {SET_USERS} from '../actions/actionTypes';
+import {SET_USERS, SET_IS_LOADING} from '../actions/actionTypes';
 
 const initialState = {
   users: [],
+  isLoading: true,
 };
 
 export default (state = initialState, action) => {
@@ -10,6 +11,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         users: action.users,
+      };
+    }
+    case SET_IS_LOADING: {
+      return {
+        ...state,
+        isLoading: action.isLoading,
       };
     }
     default: {

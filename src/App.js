@@ -1,14 +1,4 @@
-import React, {Fragment, Component} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
-
+import React, {Component} from 'react';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator, BottomTabBar} from 'react-navigation-tabs';
@@ -22,7 +12,7 @@ import {Provider} from 'react-redux';
 class EmptyScreen extends Component {
   render() {
     return (
-      <View style={styles.container}>
+      <View>
         <Text>Empty screen!</Text>
       </View>
     );

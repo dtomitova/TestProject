@@ -1,7 +1,8 @@
-import {SET_TODOS} from '../actions/actionTypes';
+import {SET_TODOS, SET_IS_LOADING} from '../actions/actionTypes';
 
 const initialState = {
   todos: [],
+  isLoading: true,
 };
 
 export default (state = initialState, action) => {
@@ -10,6 +11,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         todos: action.todos,
+      };
+    }
+    case SET_IS_LOADING: {
+      return {
+        ...state,
+        isLoading: action.isLoading,
       };
     }
     default: {

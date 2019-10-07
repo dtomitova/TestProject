@@ -1,4 +1,4 @@
-import {SET_USERS} from './actionTypes';
+import {SET_USERS, SET_IS_LOADING} from './actionTypes';
 
 export const getUsers = () => {
   return dispatch => {
@@ -8,6 +8,7 @@ export const getUsers = () => {
       .then(response => response.json())
       .then(responseJson => {
         dispatch(setUsers(responseJson));
+        dispatch(setIsLoading(false));
       });
   };
 };
@@ -15,6 +16,19 @@ export const getUsers = () => {
 export const setUsers = users => {
   return {
     type: SET_USERS,
-    users: users,
+    users,
+  };
+};
+
+export const getIsLoading = isLoading => {
+  return dispatch => {
+    dispatch(setIsLoading(isLoading));
+  };
+};
+
+export const setIsLoading = isLoading => {
+  return {
+    type: SET_IS_LOADING,
+    isLoading,
   };
 };
