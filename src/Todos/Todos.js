@@ -21,7 +21,12 @@ import {
 } from 'native-base';
 import Modal from 'react-native-modal';
 import TodosFilterComponent from './components/TodosFilterComponent/TodosFilterComponent';
-import {getTodos, getIsLoading} from './actions/todos';
+import {
+  getTodos,
+  getIsLoading,
+  getSortOption,
+  getSortOptions,
+} from './actions/todos';
 import {connect} from 'react-redux';
 
 class TodosScreen extends Component {
@@ -40,14 +45,7 @@ class TodosScreen extends Component {
   state = {
     error: null,
     isModalVisible: false,
-    radioValue: 'default',
     currentRadioValue: 'default',
-    allTodos: [],
-    filterOptions: [
-      {title: 'Default', value: 'default'},
-      {title: 'Name', value: 'name'},
-      {title: 'Completion', value: 'completion'},
-    ],
   };
 
   componentDidMount() {
@@ -58,28 +56,8 @@ class TodosScreen extends Component {
     this.props.getIsLoading(true);
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.todos !== this.props.todos) {
-      this.setState({allTodos: this.props.todos});
-    }
-  }
-
   sortButtonPressed = () => {
     this.setState({isModalVisible: true});
-  };
-
-  getSortedTodos = () => {
-    const {radioValue, allTodos} = this.state;
-
-    switch (radioValue) {
-      case 'name':
-        return [...allTodos].sort((a, b) => a.title > b.title);
-      case 'completion':
-        return [...allTodos].sort((a, b) => a.completed > b.completed);
-      default: {
-        return allTodos;
-      }
-    }
   };
 
   handleSortOptionChanged = currentRadioValue => {
@@ -88,25 +66,25 @@ class TodosScreen extends Component {
 
   handleSaveSortOption = shouldSave => {
     if (shouldSave === true) {
-      this.setState({radioValue: this.state.currentRadioValue});
+      this.props.getSortOption(this.state.currentRadioValue);
     }
     this.setState({isModalVisible: false});
   };
 
   render() {
-    const {radioValue, filterOptions, currentRadioValue} = this.state;
-    const sortedTodos = this.getSortedTodos();
+    const {currentRadioValue} = this.state;
+    const {sortOption, isLoading, todos, sortOptions} = this.props;
 
     sortAppliedMessage = null;
-    if (radioValue !== 'default')
+    if (sortOption !== 'default' || !sortOption)
       sortAppliedMessage = (
         <Text style={styles.sortAplliedMessage}>
           Todos sorted by:{' '}
-          {radioValue.charAt(0).toUpperCase() + radioValue.slice(1)}
+          {sortOption.charAt(0).toUpperCase() + sortOption.slice(1)}
         </Text>
       );
 
-    if (this.props.isLoading) {
+    if (isLoading) {
       return <ActivityIndicator style={{padding: 20}} />;
     }
 
@@ -116,7 +94,7 @@ class TodosScreen extends Component {
         <Modal isVisible={this.state.isModalVisible}>
           <TodosFilterComponent
             color="black"
-            radioButtonOptions={filterOptions}
+            radioButtonOptions={sortOptions}
             radioValue={currentRadioValue}
             sortOptionChanged={this.handleSortOptionChanged}
             saveSortOption={this.handleSaveSortOption}
@@ -124,7 +102,7 @@ class TodosScreen extends Component {
         </Modal>
         <FlatList
           style={styles.todosList}
-          data={sortedTodos}
+          data={todos}
           renderItem={({item}) => (
             <View style={styles.todoItemContainer}>
               <Text style={styles.todoItem}>{item.title}</Text>
@@ -145,13 +123,17 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getTodos: userId => dispatch(getTodos(userId)),
     getIsLoading: isLoading => dispatch(getIsLoading(isLoading)),
+    getSortOption: sortOption => dispatch(getSortOption(sortOption)),
+    getSortOptions: () => dispatch(getSortOptions()),
   };
 };
 
 const mapStateToProps = state => {
   return {
     todos: state.todos.todos,
-    isLoading: state.users.isLoading,
+    isLoading: state.todos.isLoading,
+    sortOption: state.todos.sortOption,
+    sortOptions: state.todos.sortOptions,
   };
 };
 
