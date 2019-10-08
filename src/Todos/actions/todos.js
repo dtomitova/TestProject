@@ -2,7 +2,6 @@ import {
   SET_TODOS,
   SET_IS_LOADING,
   SET_SORT_OPTION,
-  SORT_OPTIONS,
 } from './actionTypes';
 
 export const getTodos = userId => {
@@ -63,15 +62,3 @@ export const setSortOption = sortOption => {
   };
 };
 
-export const getSortOptions = () => {
-  return dispatch => {
-    dispatch(sortOptions());
-  };
-};
-
-export const sortOptions = () => {
-  return {
-    type: SORT_OPTIONS,
-    sortOptions,
-  };
-};

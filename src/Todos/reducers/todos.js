@@ -2,7 +2,6 @@ import {
   SET_TODOS,
   SET_IS_LOADING,
   SET_SORT_OPTION,
-  SORT_OPTIONS,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -31,15 +30,22 @@ export default (state = initialState, action) => {
       };
     }
     case SET_SORT_OPTION: {
-      return {
+      let {todos} = state;
+
+      switch (action.sort) {
+        case 'name':
+          todos = [...todos];
+          todos.sort((a, b) => a.title > b.title);
+          break;
+        case 'completion':
+          todos = [...todos].sort((a, b) => a.completed > b.completed);
+          break;
+      }
+
+      return { 
         ...state,
         sortOption: action.sortOption,
-      };
-    }
-    case SORT_OPTIONS: {
-      return {
-        ...state,
-        sortOptions: action.sortOptions,
+        todos,
       };
     }
     default: {

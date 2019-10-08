@@ -7,25 +7,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   Text,
-  Button,
 } from 'react-native';
 import Icon from 'react-native-ionicons';
-import {
-  Container,
-  Header,
-  Content,
-  ListItem,
-  Radio,
-  Right,
-  Left,
-} from 'native-base';
 import Modal from 'react-native-modal';
 import TodosFilterComponent from './components/TodosFilterComponent/TodosFilterComponent';
 import {
   getTodos,
-  getIsLoading,
-  getSortOption,
-  getSortOptions,
 } from './actions/todos';
 import {connect} from 'react-redux';
 
@@ -43,7 +30,6 @@ class TodosScreen extends Component {
   };
 
   state = {
-    error: null,
     isModalVisible: false,
     currentRadioValue: 'default',
   };
@@ -53,7 +39,6 @@ class TodosScreen extends Component {
     navigation.setParams({headerRightButtonPressed: this.sortButtonPressed});
     const userId = JSON.stringify(navigation.getParam('userId', 'NO-ID'));
     this.props.getTodos(userId);
-    this.props.getIsLoading(true);
   }
 
   sortButtonPressed = () => {
@@ -66,7 +51,7 @@ class TodosScreen extends Component {
 
   handleSaveSortOption = shouldSave => {
     if (shouldSave === true) {
-      this.props.getSortOption(this.state.currentRadioValue);
+      this.props.setSortOption(this.state.currentRadioValue);
     }
     this.setState({isModalVisible: false});
   };
@@ -122,9 +107,8 @@ class TodosScreen extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getTodos: userId => dispatch(getTodos(userId)),
-    getIsLoading: isLoading => dispatch(getIsLoading(isLoading)),
-    getSortOption: sortOption => dispatch(getSortOption(sortOption)),
-    getSortOptions: () => dispatch(getSortOptions()),
+    setIsLoading: isLoading => dispatch(setIsLoading(isLoading)),
+    setSortOption: sortOption => dispatch(setSortOption(sortOption)),
   };
 };
 

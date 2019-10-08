@@ -1,7 +1,7 @@
 import React, {Fragment, Component} from 'react';
 import {ActivityIndicator, SafeAreaView} from 'react-native';
 import UsersListView from './components/UsersListView';
-import {getUsers, getIsLoading} from './actions/users';
+import {getUsers, setIsLoading} from './actions/users';
 import {connect} from 'react-redux';
 
 class UsersScreen extends Component {
@@ -15,7 +15,6 @@ class UsersScreen extends Component {
 
   componentDidMount() {
     this.props.getUsers();
-    this.props.getIsLoading(true);
   }
 
   handleUserSelection = userId => {
@@ -43,7 +42,6 @@ class UsersScreen extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getUsers: () => dispatch(getUsers()),
-    getIsLoading: isLoading => dispatch(getIsLoading(isLoading)),
   };
 };
 
