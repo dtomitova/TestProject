@@ -6,7 +6,7 @@ import {
 
 const initialState = {
   todos: [],
-  isLoading: true,
+  isLoading: false,
   sortOption: 'default',
   sortOptions: [
     {title: 'Default', value: 'default'},
@@ -42,7 +42,7 @@ export default (state = initialState, action) => {
           break;
       }
 
-      return { 
+      return {
         ...state,
         sortOption: action.sortOption,
         todos,

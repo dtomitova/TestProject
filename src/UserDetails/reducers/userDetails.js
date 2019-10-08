@@ -2,7 +2,7 @@ import {SET_USER_DETAILS, SET_IS_LOADING} from '../actions/actionTypes';
 
 const initialState = {
   userDetails: null,
-  isLoading: true,
+  isLoading: false,
 };
 
 export default (state = initialState, action) => {

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-ionicons';
-import {getPosts, getIsLoading} from './actions/posts';
+import {getPosts} from './actions/posts';
 import {connect} from 'react-redux';
 import SearchBar from './components/searchBar';
 
@@ -23,7 +23,6 @@ class PostsScreen extends Component {
 
   state = {
     searchText: '',
-    error: null,
     allPosts: [],
   };
 
@@ -31,7 +30,6 @@ class PostsScreen extends Component {
     const {navigation} = this.props;
     const userId = JSON.stringify(navigation.getParam('userId', 'NO-ID'));
     this.props.getPosts(userId);
-    this.props.getIsLoading(true);
   }
 
   componentDidUpdate(prevProps) {
@@ -120,7 +118,6 @@ class PostsScreen extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getPosts: userId => dispatch(getPosts(userId)),
-    getIsLoading: isLoading => dispatch(getIsLoading(isLoading)),
   };
 };
 

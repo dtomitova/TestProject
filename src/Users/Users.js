@@ -1,16 +1,12 @@
 import React, {Fragment, Component} from 'react';
 import {ActivityIndicator, SafeAreaView} from 'react-native';
 import UsersListView from './components/UsersListView';
-import {getUsers, setIsLoading} from './actions/users';
+import {getUsers} from './actions/users';
 import {connect} from 'react-redux';
 
 class UsersScreen extends Component {
   static navigationOptions = {
     title: 'Users',
-  };
-
-  state = {
-    error: null,
   };
 
   componentDidMount() {
@@ -29,7 +25,7 @@ class UsersScreen extends Component {
     }
 
     return (
-      <SafeAreaView>
+      <SafeAreaView style={{flex: 1}}>
         <UsersListView
           usersDataSource={this.props.users}
           userSelected={this.handleUserSelection}

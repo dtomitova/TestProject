@@ -2,6 +2,7 @@ import {SET_POSTS, SET_IS_LOADING} from './actionTypes';
 
 export const getPosts = userId => {
   return dispatch => {
+    dispatch(setIsLoading(true));
     const userPostsUrl =
       'https://jsonplaceholder.typicode.com/posts?userId=' + userId;
 
@@ -18,12 +19,6 @@ export const setPosts = posts => {
   return {
     type: SET_POSTS,
     posts: posts,
-  };
-};
-
-export const getIsLoading = isLoading => {
-  return dispatch => {
-    dispatch(setIsLoading(isLoading));
   };
 };
 

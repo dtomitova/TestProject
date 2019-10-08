@@ -11,9 +11,7 @@ import {
 import Icon from 'react-native-ionicons';
 import Modal from 'react-native-modal';
 import TodosFilterComponent from './components/TodosFilterComponent/TodosFilterComponent';
-import {
-  getTodos,
-} from './actions/todos';
+import {getTodos, setSortOption} from './actions/todos';
 import {connect} from 'react-redux';
 
 class TodosScreen extends Component {
@@ -52,6 +50,8 @@ class TodosScreen extends Component {
   handleSaveSortOption = shouldSave => {
     if (shouldSave === true) {
       this.props.setSortOption(this.state.currentRadioValue);
+    } else {
+      this.state.currentRadioValue = this.props.sortOption;
     }
     this.setState({isModalVisible: false});
   };

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, ActivityIndicator, StyleSheet, Text} from 'react-native';
 import RoundedButtonWithTitleAndIcon from '../globalComponents/roundedButtonWithTitleAndIcon';
-import {getUserDetails, getIsLoading} from './actions/userDetails';
+import {getUserDetails} from './actions/userDetails';
 import {connect} from 'react-redux';
 
 class UserDetailsScreen extends Component {
@@ -10,15 +10,10 @@ class UserDetailsScreen extends Component {
     headerBackTitle: null,
   };
 
-  state = {
-    error: null,
-  };
-
   componentDidMount() {
     const {navigation} = this.props;
     const userId = JSON.stringify(navigation.getParam('userId', 'NO-ID'));
     this.props.getUserDetails(userId);
-    this.props.getIsLoading(true);
   }
 
   buttonPressedWithTitle = title => {
@@ -66,7 +61,6 @@ class UserDetailsScreen extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getUserDetails: userId => dispatch(getUserDetails(userId)),
-    getIsLoading: isLoading => dispatch(getIsLoading(isLoading)),
   };
 };
 

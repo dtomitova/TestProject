@@ -2,7 +2,7 @@ import {SET_POSTS, SET_IS_LOADING} from '../actions/actionTypes';
 
 const initialState = {
   posts: [],
-  isLoading: true,
+  isLoading: false,
 };
 
 export default (state = initialState, action) => {

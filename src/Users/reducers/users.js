@@ -2,7 +2,7 @@ import {SET_USERS, SET_IS_LOADING} from '../actions/actionTypes';
 
 const initialState = {
   users: [],
-  isLoading: true,
+  isLoading: false,
 };
 
 export default (state = initialState, action) => {
