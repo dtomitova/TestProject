@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  SafeAreaView,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, Text} from 'react-native';
 import {
   Container,
   Header,
@@ -17,41 +11,39 @@ import {
 } from 'native-base';
 
 const todosFilterComponent = props => (
-  <SafeAreaView style={{flex: 1}}>
-    <Container>
-      <Content>
-        {props.radioButtonOptions.map((data, key) => {
-          return (
-            <ListItem key={key}>
-              <Left>
-                <Text style={styles.radioButtonTitle}>{data.title}</Text>
-              </Left>
-              <Right>
-                <Radio
-                  style={styles.radioButton}
-                  onPress={props.sortOptionChanged.bind(this, data.value)}
-                  selectedColor={props.color}
-                  selected={props.radioValue == data.value}
-                />
-              </Right>
-            </ListItem>
-          );
-        })}
-        <View style={styles.cancelSaveButtonsContainer}>
-          <TouchableOpacity
-            style={styles.saveButton}
-            onPress={props.saveSortOption.bind(this, true)}>
-            <Text style={styles.textCancelSaveButtons}>Save</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.cancelButton}
-            onPress={props.saveSortOption.bind(this, false)}>
-            <Text style={styles.textCancelSaveButtons}>Cancel</Text>
-          </TouchableOpacity>
-        </View>
-      </Content>
-    </Container>
-  </SafeAreaView>
+  <Container>
+    <Content>
+      {props.radioButtonOptions.map((data, key) => {
+        return (
+          <ListItem key={key}>
+            <Left>
+              <Text style={styles.radioButtonTitle}>{data.title}</Text>
+            </Left>
+            <Right>
+              <Radio
+                style={styles.radioButton}
+                onPress={props.sortOptionChanged.bind(this, data.value)}
+                selectedColor={props.color}
+                selected={props.radioValue == data.value}
+              />
+            </Right>
+          </ListItem>
+        );
+      })}
+      <View style={styles.cancelSaveButtonsContainer}>
+        <TouchableOpacity
+          style={styles.saveButton}
+          onPress={props.saveSortOption.bind(this, true)}>
+          <Text style={styles.textCancelSaveButtons}>Save</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.cancelButton}
+          onPress={props.saveSortOption.bind(this, false)}>
+          <Text style={styles.textCancelSaveButtons}>Cancel</Text>
+        </TouchableOpacity>
+      </View>
+    </Content>
+  </Container>
 );
 
 export default todosFilterComponent;
@@ -75,7 +67,6 @@ const styles = StyleSheet.create({
   },
   radioButtonTitle: {
     fontSize: 14,
-    width: '60%',
   },
   radioButton: {
     width: 40,

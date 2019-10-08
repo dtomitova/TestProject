@@ -19,22 +19,12 @@ class EmptyScreen extends Component {
   }
 }
 
-const UsersStack = createStackNavigator(
-  {
-    Users: UsersScreen,
-    UserDetails: UserDetailsScreen,
-    Todos: TodosScreen,
-    Posts: PostsScreen,
-  },
-  {
-    defaultNavigationOptions: {
-      headerTintColor: '#fff',
-      headerStyle: {
-        backgroundColor: 'skyblue',
-      },
-    },
-  },
-);
+const UsersStack = createStackNavigator({
+  Users: UsersScreen,
+  UserDetails: UserDetailsScreen,
+  Todos: TodosScreen,
+  Posts: PostsScreen,
+});
 
 const EmptyStack = createStackNavigator({
   Empty: EmptyScreen,

@@ -8,24 +8,44 @@ import {
   StyleSheet,
   Text,
 } from 'react-native';
-import Icon from 'react-native-ionicons';
 import Modal from 'react-native-modal';
 import TodosFilterComponent from './components/TodosFilterComponent/TodosFilterComponent';
 import {getTodos, setSortOption} from './actions/todos';
 import {connect} from 'react-redux';
+import {
+  Container,
+  Header,
+  Left,
+  Body,
+  Right,
+  Title,
+  Button,
+  Icon,
+} from 'native-base';
 
 class TodosScreen extends Component {
-  static navigationOptions = ({navigation}) => {
-    const {params = {}} = navigation.state;
-    return {
-      title: navigation.getParam('username') + "'s Todos",
-      headerRight: (
-        <TouchableOpacity onPress={params.headerRightButtonPressed}>
-          <Text style={styles.headerButton}>Sort</Text>
-        </TouchableOpacity>
-      ),
-    };
-  };
+  static navigationOptions = ({navigation}) => ({
+    header: (
+      <Header>
+        <Left>
+          <Button transparent onPress={() => navigation.goBack()}>
+            <Icon name="arrow-back" />
+            <Text>Back</Text>
+          </Button>
+        </Left>
+        <Body style={styles.headerTitle}>
+          <Title>{navigation.getParam('username') + "'s Todos"}</Title>
+        </Body>
+        <Right>
+          <Button
+            onPress={navigation.state.params.headerRightButtonPressed}
+            transparent>
+            <Text>Sort</Text>
+          </Button>
+        </Right>
+      </Header>
+    ),
+  });
 
   state = {
     isModalVisible: false,
@@ -77,13 +97,16 @@ class TodosScreen extends Component {
       <SafeAreaView style={{flex: 1}}>
         {sortAppliedMessage}
         <Modal isVisible={this.state.isModalVisible}>
-          <TodosFilterComponent
-            color="black"
-            radioButtonOptions={sortOptions}
-            radioValue={currentRadioValue}
-            sortOptionChanged={this.handleSortOptionChanged}
-            saveSortOption={this.handleSaveSortOption}
-          />
+          <View style={{height: '50%'}}>
+            <TodosFilterComponent
+              style={{height: 200}}
+              color="black"
+              radioButtonOptions={sortOptions}
+              radioValue={currentRadioValue}
+              sortOptionChanged={this.handleSortOptionChanged}
+              saveSortOption={this.handleSaveSortOption}
+            />
+          </View>
         </Modal>
         <FlatList
           style={styles.todosList}
@@ -159,5 +182,10 @@ const styles = StyleSheet.create({
   todoIcon: {
     width: '10%',
     padding: 5,
+  },
+  headerTitle: {
+    flex: 4,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });

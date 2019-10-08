@@ -8,10 +8,19 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
-import Icon from 'react-native-ionicons';
 import {getPosts} from './actions/posts';
 import {connect} from 'react-redux';
 import SearchBar from './components/searchBar';
+import {
+  Container,
+  Header,
+  Left,
+  Body,
+  Right,
+  Title,
+  Button,
+  Icon,
+} from 'native-base';
 
 class PostsScreen extends Component {
   static navigationOptions = ({navigation}) => {
@@ -20,6 +29,22 @@ class PostsScreen extends Component {
       headerBackTitle: null,
     };
   };
+
+  static navigationOptions = ({navigation}) => ({
+    header: (
+      <Header>
+        <Left>
+          <Button transparent onPress={() => navigation.goBack()}>
+            <Icon name="arrow-back" />
+          </Button>
+        </Left>
+        <Body style={styles.headerTitle}>
+          <Title>{navigation.getParam('username') + "'s Posts"}</Title>
+        </Body>
+        <Right />
+      </Header>
+    ),
+  });
 
   state = {
     searchText: '',
@@ -178,5 +203,10 @@ const styles = StyleSheet.create({
     width: '10%',
     padding: 5,
     fontSize: 20,
+  },
+  headerTitle: {
+    flex: 4,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });

@@ -1,76 +1,69 @@
 import React, {Component} from 'react';
-import {
-  View,
-  ActivityIndicator,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import {Button, Icon, Text} from 'native-base';
 
-const userDetailsComponent = props => (
-  <View style={styles.container}>
-    <View style={styles.userDetailsBaseInfoContainer}>
-      <Text>{this.state.dataSourceUserDetails.name}</Text>
-      <Text>{this.state.dataSourceUserDetails.username}</Text>
-      <Text>{this.state.dataSourceUserDetails.company['name']}</Text>
+const userDetailsComponent = props => {
+  const {user} = props;
+  return (
+    <View style={styles.container}>
+      <View style={styles.baseInfoContainer}>
+        <Text>{user.name}</Text>
+        <Text>{user.username}</Text>
+        <Text>{user.company['name']}</Text>
+      </View>
+      <View style={styles.contactsContainer}>
+        <Text>{user.phone}</Text>
+        <Text>{user.website}</Text>
+      </View>
+      <View style={styles.buttonsContainer}>
+        <Button
+          style={styles.button}
+          onPress={() => props.postsPressed('Todos')}
+          iconRight
+          rounded
+          light>
+          <Text>Todos</Text>
+          <Icon name="arrow-forward" />
+        </Button>
+        <Button
+          style={styles.button}
+          onPress={() => props.postsPressed('Posts')}
+          iconRight
+          rounded
+          light>
+          <Text>Posts</Text>
+          <Icon name="arrow-forward" />
+        </Button>
+      </View>
     </View>
-    <View style={styles.userDetailsContactsContainer}>
-      <Text>{this.state.dataSourceUserDetails.phone}</Text>
-      <Text>{this.state.dataSourceUserDetails.website}</Text>
-    </View>
-    <View style={styles.userDetailsButtonsContainer}>
-      <TouchableOpacity
-        onPress={() =>
-          this.props.navigation.navigate('Posts', {
-            userId: this.state.dataSourceUserDetails.id,
-            username: this.state.dataSourceUserDetails.username,
-          })
-        }>
-        <Text style={styles.userItem}> Posts</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() =>
-          this.props.navigation.navigate('Todos', {
-            userId: this.state.dataSourceUserDetails.id,
-            username: this.state.dataSourceUserDetails.username,
-          })
-        }>
-        <Text style={styles.userItem}>Todos</Text>
-      </TouchableOpacity>
-    </View>
-  </View>
-);
-
+  );
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch',
   },
-  containerStartTop: {
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  userItem: {
-    fontFamily: 'Avenir',
-    backgroundColor: 'lightblue',
-    padding: 5,
-    marginVertical: 4,
-    marginHorizontal: 4,
-  },
-  userDetailsBaseInfoContainer: {
+  baseInfoContainer: {
     justifyContent: 'space-between',
+    alignItems: 'center',
     height: '15%',
     padding: 15,
   },
-  userDetailsContactsContainer: {
+  contactsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     height: '5%',
   },
-  userDetailsButtonsContainer: {
+  buttonsContainer: {
     justifyContent: 'flex-start',
     height: '80%',
+  },
+  button: {
+    marginLeft: 8,
+    marginRight: 8,
+    marginTop: 5,
+    backgroundColor: 'lightblue',
   },
 });
 

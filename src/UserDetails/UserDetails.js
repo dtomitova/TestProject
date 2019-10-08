@@ -1,14 +1,35 @@
 import React, {Component} from 'react';
-import {View, ActivityIndicator, StyleSheet, Text} from 'react-native';
-import RoundedButtonWithTitleAndIcon from '../globalComponents/roundedButtonWithTitleAndIcon';
+import {ActivityIndicator, View} from 'react-native';
 import {getUserDetails} from './actions/userDetails';
 import {connect} from 'react-redux';
+import UserDetailsComponent from './components/UserDetailsComponent';
+import {
+  Container,
+  Header,
+  Left,
+  Body,
+  Right,
+  Title,
+  Button,
+  Icon,
+} from 'native-base';
 
 class UserDetailsScreen extends Component {
-  static navigationOptions = {
-    title: 'Details',
-    headerBackTitle: null,
-  };
+  static navigationOptions = ({navigation}) => ({
+    header: (
+      <Header>
+        <Left>
+          <Button transparent onPress={() => navigation.goBack()}>
+            <Icon name="arrow-back" />
+          </Button>
+        </Left>
+        <Body>
+          <Title>Details</Title>
+        </Body>
+        <Right />
+      </Header>
+    ),
+  });
 
   componentDidMount() {
     const {navigation} = this.props;
@@ -31,29 +52,11 @@ class UserDetailsScreen extends Component {
     }
 
     return (
-      <View style={styles.container}>
-        <View style={styles.userDetailsBaseInfoContainer}>
-          <Text>{userDetails.name}</Text>
-          <Text>{userDetails.username}</Text>
-          <Text>{userDetails.company['name']}</Text>
-        </View>
-        <View style={styles.userDetailsContactsContainer}>
-          <Text>{userDetails.phone}</Text>
-          <Text>{userDetails.website}</Text>
-        </View>
-        <View style={styles.userDetailsButtonsContainer}>
-          <RoundedButtonWithTitleAndIcon
-            handleButtonPressed={this.buttonPressedWithTitle}
-            icon="arrow-round-forward">
-            Todos
-          </RoundedButtonWithTitleAndIcon>
-          <RoundedButtonWithTitleAndIcon
-            handleButtonPressed={this.buttonPressedWithTitle}
-            icon="arrow-round-forward">
-            Posts
-          </RoundedButtonWithTitleAndIcon>
-        </View>
-      </View>
+      <UserDetailsComponent
+        postsPressed={this.buttonPressedWithTitle}
+        todosPressed={this.buttonPressedWithTitle}
+        user={userDetails}
+      />
     );
   }
 }
@@ -75,25 +78,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(UserDetailsScreen);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'stretch',
-  },
-  userDetailsBaseInfoContainer: {
-    justifyContent: 'space-between',
-    height: '15%',
-    padding: 15,
-  },
-  userDetailsContactsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    height: '5%',
-  },
-  userDetailsButtonsContainer: {
-    justifyContent: 'flex-start',
-    height: '80%',
-  },
-});

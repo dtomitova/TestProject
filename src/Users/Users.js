@@ -1,12 +1,21 @@
 import React, {Fragment, Component} from 'react';
-import {ActivityIndicator, SafeAreaView} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 import UsersListView from './components/UsersListView';
 import {getUsers} from './actions/users';
 import {connect} from 'react-redux';
+import {Container, Header, Left, Body, Right, Title} from 'native-base';
 
 class UsersScreen extends Component {
   static navigationOptions = {
-    title: 'Users',
+    header: (
+      <Header>
+        <Left />
+        <Body>
+          <Title>Users</Title>
+        </Body>
+        <Right />
+      </Header>
+    ),
   };
 
   componentDidMount() {
@@ -25,12 +34,10 @@ class UsersScreen extends Component {
     }
 
     return (
-      <SafeAreaView style={{flex: 1}}>
-        <UsersListView
-          usersDataSource={this.props.users}
-          userSelected={this.handleUserSelection}
-        />
-      </SafeAreaView>
+      <UsersListView
+        usersDataSource={this.props.users}
+        userSelected={this.handleUserSelection}
+      />
     );
   }
 }
