@@ -12,6 +12,7 @@ import Modal from 'react-native-modal';
 import TodosFilterComponent from './components/TodosFilterComponent/TodosFilterComponent';
 import {getTodos, setSortOption} from './actions/todos';
 import {connect} from 'react-redux';
+import HeaderView from '../globalComponents/Header/headerView';
 import {
   Container,
   Header,
@@ -26,24 +27,14 @@ import {
 class TodosScreen extends Component {
   static navigationOptions = ({navigation}) => ({
     header: (
-      <Header>
-        <Left>
-          <Button transparent onPress={() => navigation.goBack()}>
-            <Icon name="arrow-back" />
-            <Text>Back</Text>
-          </Button>
-        </Left>
-        <Body style={styles.headerTitle}>
-          <Title>{navigation.getParam('username') + "'s Todos"}</Title>
-        </Body>
-        <Right>
-          <Button
-            onPress={navigation.state.params.headerRightButtonPressed}
-            transparent>
-            <Text>Sort</Text>
-          </Button>
-        </Right>
-      </Header>
+      <HeaderView
+        leftButtonPressed={() => navigation.goBack()}
+        leftIcon="arrow-back"
+        leftButtonTitle="Back"
+        headerTitle={navigation.getParam('username') + "'s Todos"}
+        rightButtonPressed={navigation.state.params.headerRightButtonPressed}
+        rightButtonTitle="Sort"
+      />
     ),
   });
 
@@ -182,10 +173,5 @@ const styles = StyleSheet.create({
   todoIcon: {
     width: '10%',
     padding: 5,
-  },
-  headerTitle: {
-    flex: 4,
-    flexDirection: 'row',
-    justifyContent: 'center',
   },
 });

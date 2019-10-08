@@ -11,6 +11,7 @@ import Accordion from 'react-native-collapsible/Accordion';
 import {getPosts} from './actions/posts';
 import {connect} from 'react-redux';
 import SearchBar from './components/searchBar';
+import HeaderView from '../globalComponents/Header/headerView';
 import {
   Container,
   Header,
@@ -32,17 +33,11 @@ class PostsScreen extends Component {
 
   static navigationOptions = ({navigation}) => ({
     header: (
-      <Header>
-        <Left>
-          <Button transparent onPress={() => navigation.goBack()}>
-            <Icon name="arrow-back" />
-          </Button>
-        </Left>
-        <Body style={styles.headerTitle}>
-          <Title>{navigation.getParam('username') + "'s Posts"}</Title>
-        </Body>
-        <Right />
-      </Header>
+      <HeaderView
+        leftButtonPressed={() => navigation.goBack()}
+        leftIcon="arrow-back"
+        headerTitle={navigation.getParam('username') + "'s Posts"}
+      />
     ),
   });
 

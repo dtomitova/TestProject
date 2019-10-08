@@ -4,18 +4,11 @@ import UsersListView from './components/UsersListView';
 import {getUsers} from './actions/users';
 import {connect} from 'react-redux';
 import {Container, Header, Left, Body, Right, Title} from 'native-base';
+import HeaderView from '../globalComponents/Header/headerView';
 
 class UsersScreen extends Component {
   static navigationOptions = {
-    header: (
-      <Header>
-        <Left />
-        <Body>
-          <Title>Users</Title>
-        </Body>
-        <Right />
-      </Header>
-    ),
+    header: <HeaderView headerTitle="Users" />,
   };
 
   componentDidMount() {

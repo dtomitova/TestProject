@@ -3,6 +3,7 @@ import {ActivityIndicator, View} from 'react-native';
 import {getUserDetails} from './actions/userDetails';
 import {connect} from 'react-redux';
 import UserDetailsComponent from './components/UserDetailsComponent';
+import HeaderView from '../globalComponents/Header/headerView';
 import {
   Container,
   Header,
@@ -17,17 +18,11 @@ import {
 class UserDetailsScreen extends Component {
   static navigationOptions = ({navigation}) => ({
     header: (
-      <Header>
-        <Left>
-          <Button transparent onPress={() => navigation.goBack()}>
-            <Icon name="arrow-back" />
-          </Button>
-        </Left>
-        <Body>
-          <Title>Details</Title>
-        </Body>
-        <Right />
-      </Header>
+      <HeaderView
+        leftButtonPressed={() => navigation.goBack()}
+        leftIcon="arrow-back"
+        headerTitle="Details"
+      />
     ),
   });
 
