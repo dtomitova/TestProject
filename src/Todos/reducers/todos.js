@@ -32,13 +32,14 @@ export default (state = initialState, action) => {
     case SET_SORT_OPTION: {
       let {todos} = state;
 
-      switch (action.sort) {
+      switch (action.sortOption) {
         case 'name':
           todos = [...todos];
           todos.sort((a, b) => a.title > b.title);
           break;
         case 'completion':
-          todos = [...todos].sort((a, b) => a.completed > b.completed);
+          todos = [...todos];
+          todos.sort((a, b) => a.completed > b.completed);
           break;
       }
 
