@@ -30,7 +30,7 @@ class TodosScreen extends Component {
       <HeaderView
         leftButtonPressed={() => navigation.goBack()}
         leftIcon="arrow-back"
-        leftButtonTitle="Back"
+        leftButtonTitle="Details"
         headerTitle={navigation.getParam('username') + "'s Todos"}
         rightButtonPressed={navigation.state.params.headerRightButtonPressed}
         rightButtonTitle="Sort"

@@ -24,13 +24,6 @@ import {
 } from 'native-base';
 
 class PostsScreen extends Component {
-  static navigationOptions = ({navigation}) => {
-    return {
-      title: navigation.getParam('username') + "'s Posts",
-      headerBackTitle: null,
-    };
-  };
-
   static navigationOptions = ({navigation}) => ({
     header: (
       <HeaderView

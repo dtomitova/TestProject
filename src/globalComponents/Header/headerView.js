@@ -25,8 +25,8 @@ const headerView = props => {
     <Header>
       <Left>
         <Button transparent onPress={props.leftButtonPressed}>
-          <Icon name={leftIcon} />
-          <Text>{leftButtonTitle}</Text>
+          <Icon style={styles.iconButton} name={leftIcon} />
+          <Text style={styles.headerButton}>{leftButtonTitle}</Text>
         </Button>
       </Left>
       <Body style={styles.headerTitle}>
@@ -34,8 +34,8 @@ const headerView = props => {
       </Body>
       <Right>
         <Button onPress={props.rightButtonPressed} transparent>
-          <Icon name={rightIcon} />
-          <Text>{rightButtonTitle}</Text>
+          <Icon style={styles.iconButton} name={rightIcon} />
+          <Text style={styles.headerButton}>{rightButtonTitle}</Text>
         </Button>
       </Right>
     </Header>
@@ -49,5 +49,11 @@ const styles = StyleSheet.create({
     flex: 3,
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  headerButton: {
+    color: 'grey',
+  },
+  iconButton: {
+    color: 'grey',
   },
 });
