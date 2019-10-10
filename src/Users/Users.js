@@ -1,6 +1,6 @@
 import React, {Fragment, Component} from 'react';
-import {ActivityIndicator, View} from 'react-native';
-import UsersListView from './components/UsersListView';
+import {ActivityIndicator, View, FlatList, StyleSheet} from 'react-native';
+import ListItemWithTitle from './components/ListItemWithTitle/ListItemWithTitle';
 import {getUsers} from './actions/users';
 import {connect} from 'react-redux';
 import {Container, Header, Left, Body, Right, Title} from 'native-base';
@@ -27,9 +27,16 @@ class UsersScreen extends Component {
     }
 
     return (
-      <UsersListView
-        usersDataSource={this.props.users}
-        userSelected={this.handleUserSelection}
+      <FlatList
+        style={styles.usersList}
+        data={this.props.users}
+        renderItem={({item}) => (
+          <ListItemWithTitle
+            renderItem={item}
+            userSelected={this.handleUserSelection}
+          />
+        )}
+        keyExtractor={({id}) => id.toString()}
       />
     );
   }
@@ -52,3 +59,9 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(UsersScreen);
+
+const styles = StyleSheet.create({
+  usersList: {
+    margin: 10,
+  },
+});

@@ -106,12 +106,12 @@ class PostsScreen extends Component {
     const filteredPosts = this.getFilteredPosts();
 
     return (
-      <SafeAreaView style={{flex: 1}}>
+      <View>
         <SearchBar
           searchText={this.state.searchText}
           handleSearchChange={searchText => this.setState({searchText})}
         />
-        <ScrollView contentContainerStyle={styles.containerStartTop}>
+        <ScrollView>
           <Accordion
             style={styles.accordion}
             sections={filteredPosts}
@@ -123,7 +123,7 @@ class PostsScreen extends Component {
             underlayColor="white"
           />
         </ScrollView>
-      </SafeAreaView>
+      </View>
     );
   }
 }
@@ -147,22 +147,11 @@ export default connect(
 )(PostsScreen);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'stretch',
-  },
   containerStartTop: {
     justifyContent: 'flex-start',
     alignItems: 'center',
     marginLeft: 8,
     marginRight: 8,
-  },
-  title: {
-    fontFamily: 'Avenir',
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginHorizontal: 5,
   },
   accordion: {
     justifyContent: 'flex-start',
@@ -191,10 +180,5 @@ const styles = StyleSheet.create({
     width: '10%',
     padding: 5,
     fontSize: 20,
-  },
-  headerTitle: {
-    flex: 4,
-    flexDirection: 'row',
-    justifyContent: 'center',
   },
 });

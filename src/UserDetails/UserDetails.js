@@ -41,7 +41,6 @@ class UserDetailsScreen extends Component {
 
   render() {
     const {userDetails, isLoading} = this.props;
-
     if (isLoading || !this.props.userDetails) {
       return <ActivityIndicator style={{padding: 20}} />;
     }

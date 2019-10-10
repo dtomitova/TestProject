@@ -71,6 +71,10 @@ class TodosScreen extends Component {
     const {currentRadioValue} = this.state;
     const {sortOption, isLoading, todos, sortOptions} = this.props;
 
+    if (isLoading) {
+      return <ActivityIndicator style={{padding: 20}} />;
+    }
+
     sortAppliedMessage = null;
     if (sortOption !== 'default' || !sortOption)
       sortAppliedMessage = (
@@ -80,12 +84,8 @@ class TodosScreen extends Component {
         </Text>
       );
 
-    if (isLoading) {
-      return <ActivityIndicator style={{padding: 20}} />;
-    }
-
     return (
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView>
         {sortAppliedMessage}
         <Modal isVisible={this.state.isModalVisible}>
           <View style={{height: '50%'}}>
