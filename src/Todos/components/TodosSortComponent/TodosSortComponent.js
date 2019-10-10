@@ -10,7 +10,7 @@ import {
   Left,
 } from 'native-base';
 
-const todosFilterComponent = props => (
+const todosSortComponent = props => (
   <Container>
     <Content>
       {props.radioButtonOptions.map((data, key) => {
@@ -22,7 +22,7 @@ const todosFilterComponent = props => (
             <Right>
               <Radio
                 style={styles.radioButton}
-                onPress={props.sortOptionChanged.bind(this, data.value)}
+                onPress={() => props.sortOptionChanged(data.value)}
                 selectedColor={props.color}
                 selected={props.radioValue == data.value}
               />
@@ -33,12 +33,12 @@ const todosFilterComponent = props => (
       <View style={styles.cancelSaveButtonsContainer}>
         <TouchableOpacity
           style={styles.saveButton}
-          onPress={props.saveSortOption.bind(this, true)}>
+          onPress={() => props.saveSortOption(true)}>
           <Text style={styles.textCancelSaveButtons}>Save</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.cancelButton}
-          onPress={props.saveSortOption.bind(this, false)}>
+          onPress={() => props.saveSortOption(false)}>
           <Text style={styles.textCancelSaveButtons}>Cancel</Text>
         </TouchableOpacity>
       </View>
@@ -46,7 +46,7 @@ const todosFilterComponent = props => (
   </Container>
 );
 
-export default todosFilterComponent;
+export default todosSortComponent;
 
 const styles = StyleSheet.create({
   cancelSaveButtonsContainer: {

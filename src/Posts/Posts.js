@@ -1,27 +1,17 @@
 import React, {Component} from 'react';
 import {
   View,
-  SafeAreaView,
   Text,
   StyleSheet,
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
+import Icon from 'react-native-ionicons';
 import Accordion from 'react-native-collapsible/Accordion';
 import {getPosts} from './actions/posts';
 import {connect} from 'react-redux';
 import SearchBar from './components/searchBar';
 import HeaderView from '../globalComponents/Header/headerView';
-import {
-  Container,
-  Header,
-  Left,
-  Body,
-  Right,
-  Title,
-  Button,
-  Icon,
-} from 'native-base';
 
 class PostsScreen extends Component {
   static navigationOptions = ({navigation}) => ({

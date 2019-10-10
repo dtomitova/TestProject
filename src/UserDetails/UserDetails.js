@@ -1,19 +1,9 @@
 import React, {Component} from 'react';
-import {ActivityIndicator, View} from 'react-native';
+import {ActivityIndicator} from 'react-native';
 import {getUserDetails} from './actions/userDetails';
 import {connect} from 'react-redux';
 import UserDetailsComponent from './components/UserDetailsComponent';
 import HeaderView from '../globalComponents/Header/headerView';
-import {
-  Container,
-  Header,
-  Left,
-  Body,
-  Right,
-  Title,
-  Button,
-  Icon,
-} from 'native-base';
 
 class UserDetailsScreen extends Component {
   static navigationOptions = ({navigation}) => ({
