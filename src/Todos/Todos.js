@@ -9,7 +9,7 @@ import {
   StyleSheet,
   Text,
 } from 'react-native';
-import HeaderView from '../globalComponents/Header/headerView';
+import HeaderView from '../common/components/Header/headerView';
 import Modal from 'react-native-modal';
 import TodosSortComponent from './components/TodosSortComponent/TodosSortComponent';
 import ListItemWithTitleAndIcon from './components/ListItemWithTitleAndIcon/ListItemWithTitleAndIcon';

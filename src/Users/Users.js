@@ -4,7 +4,7 @@ import ListItemWithTitle from './components/ListItemWithTitle/ListItemWithTitle'
 import {getUsers} from './actions/users';
 import {connect} from 'react-redux';
 import {Container, Header, Left, Body, Right, Title} from 'native-base';
-import HeaderView from '../globalComponents/Header/headerView';
+import HeaderView from '../common/components/Header/headerView';
 
 class UsersScreen extends Component {
   static navigationOptions = {
@@ -33,7 +33,7 @@ class UsersScreen extends Component {
         renderItem={({item}) => (
           <ListItemWithTitle
             renderItem={item}
-            userSelected={this.handleUserSelection}
+            onItemSelected={this.handleUserSelection}
           />
         )}
         keyExtractor={({id}) => id.toString()}

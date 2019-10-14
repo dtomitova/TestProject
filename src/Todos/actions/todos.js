@@ -1,12 +1,11 @@
 import {SET_TODOS, SET_IS_LOADING, SET_SORT_OPTION} from './actionTypes';
+import Constants from '../../common/Constants';
 
 export const getTodos = userId => {
   return dispatch => {
     dispatch(setIsLoading(true));
 
-    const userTodosUrl =
-      'https://jsonplaceholder.typicode.com/todos?userId=' + userId;
-
+    const userTodosUrl = Constants.BASE_URL + '/todos?userId=' + userId;
     fetch(userTodosUrl)
       .then(response => response.json())
       .then(responseJson => {

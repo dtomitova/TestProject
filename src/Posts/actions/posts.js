@@ -1,10 +1,10 @@
 import {SET_POSTS, SET_IS_LOADING} from './actionTypes';
+import Constants from '../../common/Constants';
 
 export const getPosts = userId => {
   return dispatch => {
     dispatch(setIsLoading(true));
-    const userPostsUrl =
-      'https://jsonplaceholder.typicode.com/posts?userId=' + userId;
+    const userPostsUrl = Constants.BASE_URL + '/posts?userId=' + userId;
 
     fetch(userPostsUrl)
       .then(response => response.json())

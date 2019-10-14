@@ -11,7 +11,7 @@ import Accordion from 'react-native-collapsible/Accordion';
 import {getPosts} from './actions/posts';
 import {connect} from 'react-redux';
 import SearchBar from './components/searchBar';
-import HeaderView from '../globalComponents/Header/headerView';
+import HeaderView from '../common/components/Header/headerView';
 
 class PostsScreen extends Component {
   static navigationOptions = ({navigation}) => ({

@@ -1,10 +1,11 @@
 import {SET_USERS, SET_IS_LOADING} from './actionTypes';
+import Constants from '../../common/Constants';
 
 export const getUsers = () => {
   return dispatch => {
     dispatch(setIsLoading(true));
-    const usersUrl = 'https://jsonplaceholder.typicode.com/users';
-
+    const usersUrl = Constants.BASE_URL + '/users';
+    console.log(usersUrl);
     fetch(usersUrl)
       .then(response => response.json())
       .then(responseJson => {
