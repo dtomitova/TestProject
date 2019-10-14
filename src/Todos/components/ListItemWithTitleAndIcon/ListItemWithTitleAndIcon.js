@@ -1,12 +1,13 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Icon from 'react-native-ionicons';
+import MainText from '../../../common/components/MainText/MainText';
 
 const listItemWithTitle = props => {
   const {renderItem} = props;
   return (
     <View style={styles.listItemContainer}>
-      <Text style={styles.listItemTitle}>{renderItem.title}</Text>
+      <MainText style={styles.listItemTitle}>{renderItem.title}</MainText>
       <Icon
         style={styles.listItemIcon}
         name={renderItem.completed === true ? 'checkmark' : 'close'}

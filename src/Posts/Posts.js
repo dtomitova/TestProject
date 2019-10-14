@@ -1,17 +1,12 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  ActivityIndicator,
-} from 'react-native';
+import {View, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
 import Icon from 'react-native-ionicons';
 import Accordion from 'react-native-collapsible/Accordion';
 import {getPosts} from './actions/posts';
 import {connect} from 'react-redux';
 import SearchBar from './components/searchBar';
-import HeaderView from '../common/components/Header/headerView';
+import HeaderView from '../common/components/Header/HeaderView';
+import MainText from '../common/components/MainText/MainText';
 
 class PostsScreen extends Component {
   static navigationOptions = ({navigation}) => ({
@@ -44,7 +39,7 @@ class PostsScreen extends Component {
   renderHeader = post => {
     return (
       <View style={styles.accordionHeader}>
-        <Text style={styles.accordionHeaderTitle}>{post.title}</Text>
+        <MainText style={styles.accordionHeaderTitle}>{post.title}</MainText>
         <Icon
           style={styles.accordionHeaderArrow}
           name={post.opened ? 'arrow-up' : 'arrow-down'}
@@ -56,7 +51,7 @@ class PostsScreen extends Component {
   renderContent = post => {
     return (
       <View style={styles.accordionContent}>
-        <Text>{post.body}</Text>
+        <MainText>{post.body}</MainText>
       </View>
     );
   };

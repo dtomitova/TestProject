@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, TouchableOpacity, StyleSheet, Text} from 'react-native';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
+import MainText from '../../../common/components/MainText/MainText';
 import {
   Container,
   Header,
@@ -17,7 +18,7 @@ const todosSortComponent = props => (
         return (
           <ListItem key={key}>
             <Left>
-              <Text style={styles.radioButtonTitle}>{data.title}</Text>
+              <MainText style={styles.radioButtonTitle}>{data.title}</MainText>
             </Left>
             <Right>
               <Radio
@@ -34,12 +35,12 @@ const todosSortComponent = props => (
         <TouchableOpacity
           style={styles.saveButton}
           onPress={() => props.saveSortOption(true)}>
-          <Text style={styles.textCancelSaveButtons}>Save</Text>
+          <MainText style={styles.textCancelSaveButtons}>Save</MainText>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.cancelButton}
           onPress={() => props.saveSortOption(false)}>
-          <Text style={styles.textCancelSaveButtons}>Cancel</Text>
+          <MainText style={styles.textCancelSaveButtons}>Cancel</MainText>
         </TouchableOpacity>
       </View>
     </Content>

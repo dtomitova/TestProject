@@ -3,7 +3,7 @@ import {ActivityIndicator} from 'react-native';
 import {getUserDetails} from './actions/userDetails';
 import {connect} from 'react-redux';
 import UserDetailsComponent from './components/UserDetailsComponent';
-import HeaderView from '../common/components/Header/headerView';
+import HeaderView from '../common/components/Header/HeaderView';
 
 class UserDetailsScreen extends Component {
   static navigationOptions = ({navigation}) => ({

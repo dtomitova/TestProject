@@ -1,19 +1,20 @@
 import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Button, Icon, Text} from 'native-base';
+import {Button, Icon} from 'native-base';
+import MainText from '../../common/components/MainText/MainText';
 
 const userDetailsComponent = props => {
   const {user} = props;
   return (
     <View style={styles.container}>
       <View style={styles.baseInfoContainer}>
-        <Text>{user.name}</Text>
-        <Text>{user.username}</Text>
-        <Text>{user.company['name']}</Text>
+        <MainText>{user.name}</MainText>
+        <MainText>{user.username}</MainText>
+        <MainText>{user.company['name']}</MainText>
       </View>
       <View style={styles.contactsContainer}>
-        <Text>{user.phone}</Text>
-        <Text>{user.website}</Text>
+        <MainText>{user.phone}</MainText>
+        <MainText>{user.website}</MainText>
       </View>
       <View style={styles.buttonsContainer}>
         <Button
@@ -22,7 +23,7 @@ const userDetailsComponent = props => {
           iconRight
           rounded
           light>
-          <Text>Todos</Text>
+          <MainText>Todos</MainText>
           <Icon name="arrow-forward" />
         </Button>
         <Button
@@ -31,7 +32,7 @@ const userDetailsComponent = props => {
           iconRight
           rounded
           light>
-          <Text>Posts</Text>
+          <MainText>Posts</MainText>
           <Icon name="arrow-forward" />
         </Button>
       </View>
@@ -63,6 +64,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     marginRight: 8,
     marginTop: 5,
+    paddingLeft: 8,
     backgroundColor: 'lightblue',
   },
 });

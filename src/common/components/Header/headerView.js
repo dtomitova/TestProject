@@ -9,8 +9,9 @@ import {
   Title,
   Button,
   Icon,
-  Text,
 } from 'native-base';
+import MainText from '../MainText/MainText';
+import Constants from '../../Constants';
 
 const headerView = props => {
   const {
@@ -26,16 +27,18 @@ const headerView = props => {
       <Left>
         <Button transparent onPress={props.leftButtonPressed}>
           <Icon style={styles.iconButton} name={leftIcon} />
-          <Text style={styles.headerButton}>{leftButtonTitle}</Text>
+          <MainText style={styles.headerButton}>{leftButtonTitle}</MainText>
         </Button>
       </Left>
-      <Body style={styles.headerTitle}>
-        <Title>{headerTitle}</Title>
+      <Body style={styles.headerTitleContainer}>
+        <MainText>
+          <Title style={styles.headerTitle}>{headerTitle}</Title>
+        </MainText>
       </Body>
       <Right>
         <Button onPress={props.rightButtonPressed} transparent>
           <Icon style={styles.iconButton} name={rightIcon} />
-          <Text style={styles.headerButton}>{rightButtonTitle}</Text>
+          <MainText style={styles.headerButton}>{rightButtonTitle}</MainText>
         </Button>
       </Right>
     </Header>
@@ -45,10 +48,13 @@ const headerView = props => {
 export default headerView;
 
 const styles = StyleSheet.create({
-  headerTitle: {
+  headerTitleContainer: {
     flex: 3,
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  headerTitle: {
+    fontSize: Constants.HEADER_FONT_SIZE,
   },
   headerButton: {
     color: 'grey',
