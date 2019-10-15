@@ -34,9 +34,10 @@ const TabNavigator = createBottomTabNavigator({
   Empty: EmptyStack,
 });
 
+const AppNavigator = createAppContainer(TabNavigator);
+
 class App extends Component {
   render() {
-    const AppNavigator = createAppContainer(TabNavigator);
     return <AppNavigator />;
   }
 }

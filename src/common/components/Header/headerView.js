@@ -25,7 +25,7 @@ const headerView = props => {
   return (
     <Header>
       <Left>
-        <Button transparent onPress={props.leftButtonPressed}>
+        <Button transparent onPress={props.onLeftButtonPressed}>
           <Icon style={styles.iconButton} name={leftIcon} />
           <MainText style={styles.headerButton}>{leftButtonTitle}</MainText>
         </Button>
@@ -36,7 +36,7 @@ const headerView = props => {
         </MainText>
       </Body>
       <Right>
-        <Button onPress={props.rightButtonPressed} transparent>
+        <Button onPress={props.onRightButtonPressed} transparent>
           <Icon style={styles.iconButton} name={rightIcon} />
           <MainText style={styles.headerButton}>{rightButtonTitle}</MainText>
         </Button>

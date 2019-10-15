@@ -9,7 +9,7 @@ class UserDetailsScreen extends Component {
   static navigationOptions = ({navigation}) => ({
     header: (
       <HeaderView
-        leftButtonPressed={() => navigation.goBack()}
+        onLeftButtonPressed={() => navigation.goBack()}
         leftIcon="arrow-back"
         headerTitle="Details"
       />
@@ -18,11 +18,11 @@ class UserDetailsScreen extends Component {
 
   componentDidMount() {
     const {navigation} = this.props;
-    const userId = JSON.stringify(navigation.getParam('userId', 'NO-ID'));
+    const userId = navigation.getParam('userId', 'NO-ID');
     this.props.getUserDetails(userId);
   }
 
-  buttonPressedWithTitle = title => {
+  buttonPressed = title => {
     this.props.navigation.navigate(title, {
       userId: this.props.userDetails.id,
       username: this.props.userDetails.username,
@@ -37,8 +37,7 @@ class UserDetailsScreen extends Component {
 
     return (
       <UserDetailsComponent
-        postsPressed={this.buttonPressedWithTitle}
-        todosPressed={this.buttonPressedWithTitle}
+        onButtonPressed={this.buttonPressed}
         user={userDetails}
       />
     );

@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
-import Icon from 'react-native-ionicons';
-import Accordion from 'react-native-collapsible/Accordion';
 import {getPosts} from './actions/posts';
 import {connect} from 'react-redux';
-import SearchBar from './components/searchBar';
+import Icon from 'react-native-ionicons';
+import Accordion from 'react-native-collapsible/Accordion';
+import SearchBar from 'Posts/components/SearchBar';
 import HeaderView from '../common/components/Header/HeaderView';
 import MainText from '../common/components/MainText/MainText';
 
@@ -12,7 +12,7 @@ class PostsScreen extends Component {
   static navigationOptions = ({navigation}) => ({
     header: (
       <HeaderView
-        leftButtonPressed={() => navigation.goBack()}
+        onLeftButtonPressed={() => navigation.goBack()}
         leftIcon="arrow-back"
         headerTitle={navigation.getParam('username') + "'s Posts"}
       />
@@ -26,7 +26,7 @@ class PostsScreen extends Component {
 
   componentDidMount() {
     const {navigation} = this.props;
-    const userId = JSON.stringify(navigation.getParam('userId', 'NO-ID'));
+    const userId = navigation.getParam('userId', 'NO-ID');
     this.props.getPosts(userId);
   }
 

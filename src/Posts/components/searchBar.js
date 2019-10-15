@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet, TextInput} from 'react-native';
 import Icon from 'react-native-ionicons';
 
-const searchBar = props => {
+const SearchBar = props => {
   const {handleSearchChange, searchText} = props;
 
   return (
@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default searchBar;
+export default SearchBar;

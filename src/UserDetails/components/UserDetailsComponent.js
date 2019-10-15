@@ -3,7 +3,10 @@ import {StyleSheet, View} from 'react-native';
 import {Button, Icon} from 'native-base';
 import MainText from '../../common/components/MainText/MainText';
 
-const userDetailsComponent = props => {
+const POSTS = 'Posts';
+const TODOS = 'Todos';
+
+const UserDetailsComponent = props => {
   const {user} = props;
   return (
     <View style={styles.container}>
@@ -19,20 +22,20 @@ const userDetailsComponent = props => {
       <View style={styles.buttonsContainer}>
         <Button
           style={styles.button}
-          onPress={() => props.postsPressed('Todos')}
+          onPress={() => props.onButtonPressed(TODOS)}
           iconRight
           rounded
           light>
-          <MainText>Todos</MainText>
+          <MainText>{TODOS}</MainText>
           <Icon name="arrow-forward" />
         </Button>
         <Button
           style={styles.button}
-          onPress={() => props.postsPressed('Posts')}
+          onPress={() => props.onButtonPressed(POSTS)}
           iconRight
           rounded
           light>
-          <MainText>Posts</MainText>
+          <MainText>{POSTS}</MainText>
           <Icon name="arrow-forward" />
         </Button>
       </View>
@@ -69,4 +72,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default userDetailsComponent;
+export default UserDetailsComponent;

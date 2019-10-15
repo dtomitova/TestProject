@@ -2,7 +2,7 @@ import React from 'react';
 import {TouchableOpacity, StyleSheet} from 'react-native';
 import MainText from '../../../common/components/MainText/MainText';
 
-const listItemWithTitle = props => {
+const ListItemWithTitle = props => {
   const {renderItem, onItemSelected} = props;
   return (
     <TouchableOpacity onPress={() => props.onItemSelected(renderItem.id)}>
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default listItemWithTitle;
+export default ListItemWithTitle;

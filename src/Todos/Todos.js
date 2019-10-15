@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import {getTodos, setSortOption} from './actions/todos';
-import {connect} from 'react-redux';
 import {
   View,
   FlatList,
@@ -9,8 +7,10 @@ import {
   StyleSheet,
   Text,
 } from 'react-native';
-import HeaderView from '../common/components/Header/HeaderView';
+import {getTodos, setSortOption} from './actions/todos';
+import {connect} from 'react-redux';
 import Modal from 'react-native-modal';
+import HeaderView from '../common/components/Header/HeaderView';
 import TodosSortComponent from './components/TodosSortComponent/TodosSortComponent';
 import ListItemWithTitleAndIcon from './components/ListItemWithTitleAndIcon/ListItemWithTitleAndIcon';
 
@@ -18,11 +18,11 @@ class TodosScreen extends Component {
   static navigationOptions = ({navigation}) => ({
     header: (
       <HeaderView
-        leftButtonPressed={() => navigation.goBack()}
+        onLeftButtonPressed={() => navigation.goBack()}
         leftIcon="arrow-back"
         leftButtonTitle="Details"
         headerTitle={navigation.getParam('username') + "'s Todos"}
-        rightButtonPressed={navigation.state.params.headerRightButtonPressed}
+        onRightButtonPressed={navigation.state.params.headerRightButtonPressed}
         rightButtonTitle="Sort"
       />
     ),
@@ -36,7 +36,7 @@ class TodosScreen extends Component {
   componentDidMount() {
     const {navigation} = this.props;
     navigation.setParams({headerRightButtonPressed: this.sortButtonPressed});
-    const userId = JSON.stringify(navigation.getParam('userId', 'NO-ID'));
+    const userId = navigation.getParam('userId', 'NO-ID');
     this.props.getTodos(userId);
   }
 
@@ -52,7 +52,7 @@ class TodosScreen extends Component {
     if (shouldSave === true) {
       this.props.setSortOption(this.state.currentRadioValue);
     } else {
-      this.state.currentRadioValue = this.props.sortOption;
+      this.setState({currentRadioValue: this.props.sortOption});
     }
     this.setState({isModalVisible: false});
   };
