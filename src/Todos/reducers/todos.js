@@ -1,6 +1,7 @@
 import {
   SET_TODOS,
   SET_IS_LOADING,
+  SET_ERROR,
   SET_SORT_OPTION,
 } from '../actions/actionTypes';
 
@@ -13,6 +14,7 @@ const initialState = {
     {title: 'Name', value: 'name'},
     {title: 'Completion', value: 'completion'},
   ],
+  error: null,
 };
 
 export default (state = initialState, action) => {
@@ -27,6 +29,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: action.payload.isLoading,
+      };
+    }
+    case SET_ERROR: {
+      return {
+        ...state,
+        error: action.payload.error,
       };
     }
     case SET_SORT_OPTION: {

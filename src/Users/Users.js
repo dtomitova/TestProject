@@ -5,6 +5,7 @@ import {getUsers} from './actions/users';
 import {connect} from 'react-redux';
 import {Container, Header, Left, Body, Right, Title} from 'native-base';
 import HeaderView from '../common/components/Header/HeaderView';
+import ErrorView from '../common/components/ErrorView/ErrorView';
 
 class UsersScreen extends Component {
   static navigationOptions = {
@@ -21,15 +22,28 @@ class UsersScreen extends Component {
     });
   };
 
+  handleTryAgainBtnPressed = () => {
+    this.props.getUsers();
+  };
+
   render() {
-    if (this.props.isLoading) {
+    const {users, error, isLoading} = this.props;
+
+    if (isLoading) {
       return <ActivityIndicator style={{padding: 20}} />;
     }
-
+    if (error) {
+      return (
+        <ErrorView
+          errorMessage={error.message}
+          onTryAgainBtnPressed={this.handleTryAgainBtnPressed}
+        />
+      );
+    }
     return (
       <FlatList
         style={styles.usersList}
-        data={this.props.users}
+        data={users}
         renderItem={({item}) => (
           <ListItemWithTitle
             renderItem={item}
@@ -52,6 +66,7 @@ const mapStateToProps = state => {
   return {
     users: state.users.users,
     isLoading: state.users.isLoading,
+    error: state.users.error,
   };
 };
 

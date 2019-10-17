@@ -13,6 +13,7 @@ import Modal from 'react-native-modal';
 import HeaderView from '../common/components/Header/HeaderView';
 import TodosSortComponent from './components/TodosSortComponent/TodosSortComponent';
 import ListItemWithTitleAndIcon from './components/ListItemWithTitleAndIcon/ListItemWithTitleAndIcon';
+import ErrorView from '../common/components/ErrorView/ErrorView';
 
 class TodosScreen extends Component {
   static navigationOptions = ({navigation}) => ({
@@ -59,10 +60,18 @@ class TodosScreen extends Component {
 
   render() {
     const {currentRadioValue} = this.state;
-    const {sortOption, isLoading, todos, sortOptions} = this.props;
+    const {sortOption, error, isLoading, todos, sortOptions} = this.props;
 
     if (isLoading) {
       return <ActivityIndicator style={{padding: 20}} />;
+    }
+    if (error) {
+      return (
+        <ErrorView
+          errorMessage={error.message}
+          onTryAgainBtnPressed={this.handleTryAgainBtnPressed}
+        />
+      );
     }
 
     sortAppliedMessage = null;
@@ -116,6 +125,7 @@ const mapStateToProps = state => {
     isLoading: state.todos.isLoading,
     sortOption: state.todos.sortOption,
     sortOptions: state.todos.sortOptions,
+    error: state.todos.error,
   };
 };
 

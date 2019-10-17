@@ -4,6 +4,7 @@ import {getUserDetails} from './actions/userDetails';
 import {connect} from 'react-redux';
 import UserDetailsComponent from './components/UserDetailsComponent';
 import HeaderView from '../common/components/Header/HeaderView';
+import ErrorView from '../common/components/ErrorView/ErrorView';
 
 class UserDetailsScreen extends Component {
   static navigationOptions = ({navigation}) => ({
@@ -30,8 +31,17 @@ class UserDetailsScreen extends Component {
   };
 
   render() {
-    const {userDetails, isLoading} = this.props;
-    if (isLoading || !this.props.userDetails) {
+    const {userDetails, error, isLoading} = this.props;
+
+    if (error) {
+      return (
+        <ErrorView
+          errorMessage={error.message}
+          onTryAgainBtnPressed={this.handleTryAgainBtnPressed}
+        />
+      );
+    }
+    if (isLoading || !userDetails) {
       return <ActivityIndicator style={{padding: 20}} />;
     }
 
@@ -54,6 +64,7 @@ const mapStateToProps = state => {
   return {
     userDetails: state.userDetails.userDetails,
     isLoading: state.userDetails.isLoading,
+    error: state.userDetails.error,
   };
 };
 

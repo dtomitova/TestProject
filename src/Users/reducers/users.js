@@ -1,8 +1,9 @@
-import {SET_USERS, SET_IS_LOADING} from '../actions/actionTypes';
+import {SET_USERS, SET_IS_LOADING, SET_ERROR} from '../actions/actionTypes';
 
 const initialState = {
   users: [],
   isLoading: false,
+  error: null,
 };
 
 export default (state = initialState, action) => {
@@ -11,6 +12,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         users: action.payload.users,
+      };
+    }
+    case SET_ERROR: {
+      return {
+        ...state,
+        error: action.payload.error,
       };
     }
     case SET_IS_LOADING: {

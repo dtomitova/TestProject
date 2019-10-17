@@ -1,4 +1,4 @@
-import {SET_POSTS, SET_IS_LOADING} from './actionTypes';
+import {SET_POSTS, SET_IS_LOADING, SET_ERROR} from './actionTypes';
 import Constants from '../../common/Constants';
 
 export const getPosts = userId => {
@@ -7,9 +7,19 @@ export const getPosts = userId => {
     const userPostsUrl = Constants.BASE_URL + '/posts?userId=' + userId;
 
     fetch(userPostsUrl)
-      .then(response => response.json())
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Something went wrong');
+        }
+      })
       .then(responseJson => {
         dispatch(setPosts(responseJson));
+        dispatch(setIsLoading(false));
+      })
+      .catch(error => {
+        dispatch(setError(error));
         dispatch(setIsLoading(false));
       });
   };
@@ -19,6 +29,13 @@ export const setPosts = posts => {
   return {
     type: SET_POSTS,
     payload: {posts},
+  };
+};
+
+export const setError = error => {
+  return {
+    type: SET_ERROR,
+    payload: {error},
   };
 };
 

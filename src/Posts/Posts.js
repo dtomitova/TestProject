@@ -7,6 +7,7 @@ import Accordion from 'react-native-collapsible/Accordion';
 import SearchBar from 'Posts/components/SearchBar';
 import HeaderView from '../common/components/Header/HeaderView';
 import MainText from '../common/components/MainText/MainText';
+import ErrorView from '../common/components/ErrorView/ErrorView';
 
 class PostsScreen extends Component {
   static navigationOptions = ({navigation}) => ({
@@ -84,8 +85,18 @@ class PostsScreen extends Component {
       .filter(i => this.getFilteredPosts()[i].opened);
 
   render() {
-    if (this.props.isLoading) {
+    const {searchText} = this.state;
+    const {error, isLoading} = this.props;
+    if (isLoading) {
       return <ActivityIndicator style={{padding: 60}} />;
+    }
+    if (error) {
+      return (
+        <ErrorView
+          errorMessage={error.message}
+          onTryAgainBtnPressed={this.handleTryAgainBtnPressed}
+        />
+      );
     }
 
     const filteredPosts = this.getFilteredPosts();
@@ -93,7 +104,7 @@ class PostsScreen extends Component {
     return (
       <View>
         <SearchBar
-          searchText={this.state.searchText}
+          searchText={searchText}
           handleSearchChange={searchText => this.setState({searchText})}
         />
         <ScrollView>
@@ -123,6 +134,7 @@ const mapStateToProps = state => {
   return {
     posts: state.posts.posts,
     isLoading: state.users.isLoading,
+    error: state.posts.error,
   };
 };
 

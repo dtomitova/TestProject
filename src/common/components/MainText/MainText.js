@@ -14,5 +14,6 @@ const styles = StyleSheet.create({
   mainText: {
     fontFamily: Constants.BASE_FONT,
     fontSize: Constants.BASE_FONT_SIZE,
+    textAlign: 'center',
   },
 });
