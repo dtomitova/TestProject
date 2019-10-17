@@ -10,13 +10,13 @@ export default (state = initialState, action) => {
     case SET_POSTS: {
       return {
         ...state,
-        posts: action.posts,
+        posts: action.payload.posts,
       };
     }
     case SET_IS_LOADING: {
       return {
         ...state,
-        isLoading: action.isLoading,
+        isLoading: action.payload.isLoading,
       };
     }
     default: {

@@ -18,20 +18,20 @@ export const getTodos = userId => {
 export const setTodos = todos => {
   return {
     type: SET_TODOS,
-    todos: todos,
+    payload: {todos},
   };
 };
 
 export const setIsLoading = isLoading => {
   return {
     type: SET_IS_LOADING,
-    isLoading,
+    payload: {isLoading},
   };
 };
 
 export const setSortOption = sortOption => {
   return {
     type: SET_SORT_OPTION,
-    sortOption,
+    payload: {sortOption},
   };
 };

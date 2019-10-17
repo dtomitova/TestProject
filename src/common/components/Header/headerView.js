@@ -13,7 +13,7 @@ import {
 import MainText from '../MainText/MainText';
 import Constants from '../../Constants';
 
-const headerView = props => {
+const HeaderView = props => {
   const {
     leftIcon,
     leftButtonTitle,
@@ -45,7 +45,7 @@ const headerView = props => {
   );
 };
 
-export default headerView;
+export default HeaderView;
 
 const styles = StyleSheet.create({
   headerTitleContainer: {

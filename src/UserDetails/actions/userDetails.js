@@ -18,13 +18,13 @@ export const getUserDetails = userId => {
 export const setUserDetails = userDetails => {
   return {
     type: SET_USER_DETAILS,
-    userDetails,
+    payload: {userDetails},
   };
 };
 
 export const setIsLoading = isLoading => {
   return {
     type: SET_IS_LOADING,
-    isLoading,
+    payload: {isLoading},
   };
 };

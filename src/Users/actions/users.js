@@ -18,13 +18,13 @@ export const getUsers = () => {
 export const setUsers = users => {
   return {
     type: SET_USERS,
-    users,
+    payload: {users},
   };
 };
 
 export const setIsLoading = isLoading => {
   return {
     type: SET_IS_LOADING,
-    isLoading,
+    payload: {isLoading},
   };
 };

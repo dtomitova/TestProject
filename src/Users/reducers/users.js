@@ -10,13 +10,13 @@ export default (state = initialState, action) => {
     case SET_USERS: {
       return {
         ...state,
-        users: action.users,
+        users: action.payload.users,
       };
     }
     case SET_IS_LOADING: {
       return {
         ...state,
-        isLoading: action.isLoading,
+        isLoading: action.payload.isLoading,
       };
     }
     default: {

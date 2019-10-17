@@ -18,13 +18,13 @@ export const getPosts = userId => {
 export const setPosts = posts => {
   return {
     type: SET_POSTS,
-    posts: posts,
+    payload: {posts},
   };
 };
 
 export const setIsLoading = isLoading => {
   return {
     type: SET_IS_LOADING,
-    isLoading,
+    payload: {isLoading},
   };
 };

@@ -20,13 +20,13 @@ export default (state = initialState, action) => {
     case SET_TODOS: {
       return {
         ...state,
-        todos: action.todos,
+        todos: action.payload.todos,
       };
     }
     case SET_IS_LOADING: {
       return {
         ...state,
-        isLoading: action.isLoading,
+        isLoading: action.payload.isLoading,
       };
     }
     case SET_SORT_OPTION: {
@@ -45,7 +45,7 @@ export default (state = initialState, action) => {
 
       return {
         ...state,
-        sortOption: action.sortOption,
+        sortOption: action.payload.sortOption,
         todos,
       };
     }
