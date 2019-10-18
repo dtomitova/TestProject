@@ -1,15 +1,8 @@
-import {
-  SET_TODOS,
-  SET_IS_LOADING,
-  SET_SORT_OPTION,
-  SET_ERROR,
-} from './actionTypes';
+import {SET_TODOS, SET_SORT_OPTION, SET_ERROR} from './actionTypes';
 import Constants from '../../common/Constants';
 
 export const getTodos = userId => {
   return dispatch => {
-    dispatch(setIsLoading(true));
-
     const userTodosUrl = Constants.BASE_URL + '/todos?userId=' + userId;
 
     fetch(userTodosUrl)
@@ -22,11 +15,9 @@ export const getTodos = userId => {
       })
       .then(responseJson => {
         dispatch(setTodos(responseJson));
-        dispatch(setIsLoading(false));
       })
       .catch(error => {
         dispatch(setError(error));
-        dispatch(setIsLoading(false));
       });
   };
 };
@@ -37,14 +28,6 @@ export const setTodos = todos => {
     payload: {todos},
   };
 };
-
-export const setIsLoading = isLoading => {
-  return {
-    type: SET_IS_LOADING,
-    payload: {isLoading},
-  };
-};
-
 export const setError = error => {
   return {
     type: SET_ERROR,

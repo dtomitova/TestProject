@@ -1,9 +1,8 @@
-import {SET_USER_DETAILS, SET_IS_LOADING, SET_ERROR} from './actionTypes';
+import {SET_USER_DETAILS, SET_ERROR} from './actionTypes';
 import Constants from '../../common/Constants';
 
 export const getUserDetails = userId => {
   return dispatch => {
-    dispatch(setIsLoading(true));
     const userDetailsUrl = Constants.BASE_URL + '/users/' + userId;
 
     fetch(userDetailsUrl)
@@ -15,11 +14,9 @@ export const getUserDetails = userId => {
         }
       })
       .then(responseJson => {
-        dispatch(setIsLoading(false));
         dispatch(setUserDetails(responseJson));
       })
       .catch(error => {
-        dispatch(setIsLoading(false));
         dispatch(setError(error));
       });
   };
@@ -36,12 +33,5 @@ export const setError = error => {
   return {
     type: SET_ERROR,
     payload: {error},
-  };
-};
-
-export const setIsLoading = isLoading => {
-  return {
-    type: SET_IS_LOADING,
-    payload: {isLoading},
   };
 };

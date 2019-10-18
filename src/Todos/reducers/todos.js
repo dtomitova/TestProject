@@ -1,13 +1,8 @@
-import {
-  SET_TODOS,
-  SET_IS_LOADING,
-  SET_ERROR,
-  SET_SORT_OPTION,
-} from '../actions/actionTypes';
+import {SET_TODOS, SET_ERROR, SET_SORT_OPTION} from '../actions/actionTypes';
 
 const initialState = {
   todos: [],
-  isLoading: false,
+  isLoading: true,
   sortOption: 'default',
   sortOptions: [
     {title: 'Default', value: 'default'},
@@ -23,18 +18,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         todos: action.payload.todos,
-      };
-    }
-    case SET_IS_LOADING: {
-      return {
-        ...state,
-        isLoading: action.payload.isLoading,
+        isLoading: false,
       };
     }
     case SET_ERROR: {
       return {
         ...state,
         error: action.payload.error,
+        isLoading: false,
       };
     }
     case SET_SORT_OPTION: {

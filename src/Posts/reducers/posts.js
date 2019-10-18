@@ -1,8 +1,8 @@
-import {SET_POSTS, SET_IS_LOADING, SET_ERROR} from '../actions/actionTypes';
+import {SET_POSTS, SET_ERROR} from '../actions/actionTypes';
 
 const initialState = {
   posts: [],
-  isLoading: false,
+  isLoading: true,
   error: null,
 };
 
@@ -12,18 +12,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         posts: action.payload.posts,
+        isLoading: false,
       };
     }
     case SET_ERROR: {
       return {
         ...state,
         error: action.payload.error,
-      };
-    }
-    case SET_IS_LOADING: {
-      return {
-        ...state,
-        isLoading: action.payload.isLoading,
+        isLoading: false,
       };
     }
     default: {
