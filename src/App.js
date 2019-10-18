@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
+import Icon from 'react-native-ionicons';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator, BottomTabBar} from 'react-navigation-tabs';
@@ -29,10 +30,31 @@ const EmptyStack = createStackNavigator({
   Empty: EmptyScreen,
 });
 
-const TabNavigator = createBottomTabNavigator({
-  Users: UsersStack,
-  Empty: EmptyStack,
-});
+const TabNavigator = createBottomTabNavigator(
+  {
+    Users: UsersStack,
+    Empty: EmptyStack,
+  },
+  {
+    defaultNavigationOptions: ({navigation}) => ({
+      tabBarIcon: ({tintColor}) => {
+        const {routeName} = navigation.state;
+        if (routeName === 'Users') {
+          return <Icon name="people" color={tintColor} />;
+        } else {
+          return <Icon name="paw" color={tintColor} />;
+        }
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: 'black',
+      inactiveTintColor: 'gray',
+      style: {
+        backgroundColor: 'lightblue',
+      },
+    },
+  },
+);
 
 const AppNavigator = createAppContainer(TabNavigator);
 
