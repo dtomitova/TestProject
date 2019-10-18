@@ -1,5 +1,5 @@
-import {SET_TODOS, SET_SORT_OPTION, SET_ERROR} from './actionTypes';
-import Constants from '../../common/Constants';
+import {SET_TODOS, SET_SORT_OPTION, SET_ERROR} from 'Todos/actions/actionTypes';
+import Constants from 'common/Constants';
 
 export const getTodos = userId => {
   return dispatch => {

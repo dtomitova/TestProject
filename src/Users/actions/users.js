@@ -1,5 +1,5 @@
-import {SET_USERS, SET_ERROR} from './actionTypes';
-import Constants from '../../common/Constants';
+import {SET_USERS, SET_ERROR} from 'Users/actions/actionTypes';
+import Constants from 'common/Constants';
 
 export const getUsers = () => {
   return dispatch => {

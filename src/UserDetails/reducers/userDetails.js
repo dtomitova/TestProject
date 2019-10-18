@@ -1,4 +1,4 @@
-import {SET_USER_DETAILS, SET_ERROR} from '../actions/actionTypes';
+import {SET_USER_DETAILS, SET_ERROR} from 'UserDetails/actions/actionTypes';
 
 const initialState = {
   userDetails: null,

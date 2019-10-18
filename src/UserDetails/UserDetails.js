@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {ActivityIndicator} from 'react-native';
-import {getUserDetails} from './actions/userDetails';
+import {getUserDetails} from 'UserDetails/actions/userDetails';
 import {connect} from 'react-redux';
-import UserDetailsComponent from './components/UserDetailsComponent';
-import HeaderView from '../common/components/Header/HeaderView';
-import ErrorView from '../common/components/ErrorView/ErrorView';
+import UserDetailsComponent from 'UserDetails/components/UserDetailsComponent';
+import HeaderView from 'common/components/Header/HeaderView';
+import ErrorView from 'common/components/ErrorView/ErrorView';
 
 class UserDetailsScreen extends Component {
   static navigationOptions = ({navigation}) => ({

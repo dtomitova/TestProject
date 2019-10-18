@@ -1,5 +1,5 @@
-import {SET_USER_DETAILS, SET_ERROR} from './actionTypes';
-import Constants from '../../common/Constants';
+import {SET_USER_DETAILS, SET_ERROR} from 'UserDetails/actions/actionTypes';
+import Constants from 'common/Constants';
 
 export const getUserDetails = userId => {
   return dispatch => {

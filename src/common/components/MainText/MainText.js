@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, StyleSheet} from 'react-native';
-import Constants from '../../Constants';
+import Constants from 'common/Constants';
 
 const MainText = props => (
   <Text {...props} style={[styles.mainText, props.style]}>

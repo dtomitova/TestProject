@@ -5,9 +5,9 @@ import {connect} from 'react-redux';
 import Icon from 'react-native-ionicons';
 import Accordion from 'react-native-collapsible/Accordion';
 import SearchBar from 'Posts/components/SearchBar';
-import HeaderView from '../common/components/Header/HeaderView';
-import MainText from '../common/components/MainText/MainText';
-import ErrorView from '../common/components/ErrorView/ErrorView';
+import HeaderView from 'common/components/Header/HeaderView';
+import MainText from 'common/components/MainText/MainText';
+import ErrorView from 'common/components/ErrorView/ErrorView';
 
 class PostsScreen extends Component {
   static navigationOptions = ({navigation}) => ({

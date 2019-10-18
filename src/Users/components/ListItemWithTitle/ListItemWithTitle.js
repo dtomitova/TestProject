@@ -1,6 +1,6 @@
 import React from 'react';
 import {TouchableOpacity, StyleSheet} from 'react-native';
-import MainText from '../../../common/components/MainText/MainText';
+import MainText from 'common/components/MainText/MainText';
 
 const ListItemWithTitle = props => {
   const {renderItem, onItemSelected} = props;

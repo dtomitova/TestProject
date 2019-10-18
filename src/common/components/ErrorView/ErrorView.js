@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Button, TouchableOpacity} from 'react-native';
-import MainText from '../MainText/MainText';
-import Constants from '../../Constants';
+import MainText from 'common/components/MainText/MainText';
+import Constants from 'common/Constants';
 
 const TRY_AGAIN = 'Try again';
 const ERROR_FONT_SIZE = 20;

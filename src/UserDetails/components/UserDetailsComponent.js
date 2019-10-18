@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Icon} from 'native-base';
-import MainText from '../../common/components/MainText/MainText';
+import MainText from 'common/components/MainText/MainText';
 
 const POSTS = 'Posts';
 const TODOS = 'Todos';

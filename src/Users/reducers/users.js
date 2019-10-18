@@ -1,4 +1,4 @@
-import {SET_USERS, SET_ERROR} from '../actions/actionTypes';
+import {SET_USERS, SET_ERROR} from 'Users/actions/actionTypes';
 
 const initialState = {
   users: [],

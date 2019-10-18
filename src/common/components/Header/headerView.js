@@ -10,8 +10,8 @@ import {
   Button,
   Icon,
 } from 'native-base';
-import MainText from '../MainText/MainText';
-import Constants from '../../Constants';
+import MainText from 'common/components/MainText/MainText';
+import Constants from 'common/Constants';
 
 const HeaderView = props => {
   const {

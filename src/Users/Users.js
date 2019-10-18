@@ -1,11 +1,11 @@
 import React, {Fragment, Component} from 'react';
 import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
-import ListItemWithTitle from './components/ListItemWithTitle/ListItemWithTitle';
-import {getUsers} from './actions/users';
+import {getUsers} from 'Users/actions/users';
 import {connect} from 'react-redux';
 import {Container, Header, Left, Body, Right, Title} from 'native-base';
-import HeaderView from '../common/components/Header/HeaderView';
-import ErrorView from '../common/components/ErrorView/ErrorView';
+import ListItemWithTitle from 'Users/components/ListItemWithTitle/ListItemWithTitle';
+import HeaderView from 'common/components/Header/HeaderView';
+import ErrorView from 'common/components/ErrorView/ErrorView';
 
 class UsersScreen extends Component {
   static navigationOptions = {

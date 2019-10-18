@@ -10,10 +10,10 @@ import {
 import {getTodos, setSortOption} from './actions/todos';
 import {connect} from 'react-redux';
 import Modal from 'react-native-modal';
-import HeaderView from '../common/components/Header/HeaderView';
-import TodosSortComponent from './components/TodosSortComponent/TodosSortComponent';
-import ListItemWithTitleAndIcon from './components/ListItemWithTitleAndIcon/ListItemWithTitleAndIcon';
-import ErrorView from '../common/components/ErrorView/ErrorView';
+import HeaderView from 'common/components/Header/HeaderView';
+import TodosSortComponent from 'Todos/components/TodosSortComponent/TodosSortComponent';
+import ListItemWithTitleAndIcon from 'Todos/components/ListItemWithTitleAndIcon/ListItemWithTitleAndIcon';
+import ErrorView from 'common/components/ErrorView/ErrorView';
 
 class TodosScreen extends Component {
   static navigationOptions = ({navigation}) => ({

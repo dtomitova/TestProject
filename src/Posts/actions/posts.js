@@ -1,5 +1,5 @@
-import {SET_POSTS, SET_ERROR} from './actionTypes';
-import Constants from '../../common/Constants';
+import {SET_POSTS, SET_ERROR} from 'Posts/actions/actionTypes';
+import Constants from 'common/Constants';
 
 export const getPosts = userId => {
   return dispatch => {

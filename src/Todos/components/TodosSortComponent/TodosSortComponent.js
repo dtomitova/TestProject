@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
-import MainText from '../../../common/components/MainText/MainText';
+import MainText from 'common/components/MainText/MainText';
 import {
   Container,
   Header,

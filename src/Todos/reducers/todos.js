@@ -1,4 +1,4 @@
-import {SET_TODOS, SET_ERROR, SET_SORT_OPTION} from '../actions/actionTypes';
+import {SET_TODOS, SET_ERROR, SET_SORT_OPTION} from 'Todos/actions/actionTypes';
 
 const initialState = {
   todos: [],

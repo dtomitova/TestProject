@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import Icon from 'react-native-ionicons';
-import MainText from '../../../common/components/MainText/MainText';
+import MainText from 'common/components/MainText/MainText';
 
 const listItemWithTitle = props => {
   const {renderItem} = props;
